@@ -188,7 +188,7 @@ public class WaterPurity
             //Trying to make compat with unregistered fluid container
             BlockEntity entity = level.getBlockEntity(pos);
 
-            if (isFillableBlock(blockState) ||(entity != null&& entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()))
+            if (isFillableBlock(blockState) || (entity != null && entity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent()))
             {
                 int purity = getPurity(event.getItemStack());
 
