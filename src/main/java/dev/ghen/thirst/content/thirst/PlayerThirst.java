@@ -20,6 +20,7 @@ public class PlayerThirst implements IThirst
     public static boolean checkTombstoneEffects = false;
     public static boolean checkFDEffects = false;
     public static boolean checkLetsDoBakeryEffects = false;
+    public static boolean checkLetsDoBreweryEffects = false;
     public static boolean checkVampirismEffects = false;
 
     int thirst = 20;
@@ -84,7 +85,7 @@ public class PlayerThirst implements IThirst
         if(player.getAbilities().invulnerable)
             return;
 
-        if(checkTombstoneEffects && player.hasEffect(ovh.corail.tombstone.registry.ModEffects.ghostly_shape))
+        if(checkTombstoneEffects && player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("ghostly_shape")))
             return;
 
         if(checkVampirismEffects && Helper.isVampire(player))
@@ -93,8 +94,10 @@ public class PlayerThirst implements IThirst
         boolean isNourished = checkFDEffects && player.hasEffect(ModEffects.NOURISHMENT.get());
         boolean isStuffed = checkLetsDoBakeryEffects &&
                 player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("stuffed"));
+        boolean isSaturated = checkLetsDoBreweryEffects &&
+                player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("saturated"));
 
-        if (!isNourished && !isStuffed)
+        if (!isNourished && !isStuffed && !isSaturated)
         {
             updateExhaustion(player);
         }

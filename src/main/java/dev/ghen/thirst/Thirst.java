@@ -87,6 +87,9 @@ public class Thirst
 
         if(ModList.get().isLoaded("bakery"))
             PlayerThirst.checkLetsDoBakeryEffects = true;
+
+        if(ModList.get().isLoaded("brewery"))
+            PlayerThirst.checkLetsDoBreweryEffects = true;
     }
 
     private void clientSetup(final FMLClientSetupEvent event)

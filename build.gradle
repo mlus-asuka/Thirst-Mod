@@ -141,7 +141,6 @@ dependencies {
     implementation fg.deobf("curse.maven:tough-as-nails-246391:4624861")
     implementation fg.deobf("curse.maven:jade-324717:4768593")
 
-    implementation fg.deobf("curse.maven:corail-tombstone-243707:4777153")
     implementation fg.deobf("curse.maven:vampirism-become-a-vampire-233029:4783000")
 
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
