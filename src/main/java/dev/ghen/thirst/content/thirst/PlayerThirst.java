@@ -11,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import vectorwing.farmersdelight.common.registry.ModEffects;
 
@@ -29,15 +28,7 @@ public class PlayerThirst implements IThirst
     int damageTimer = 0;
     int syncTimer = 0;
     float prevTickExhaustion = 0.0F;
-    Vec3 lastPos = Vec3.ZERO;
     boolean justHealed = false;
-
-    public Vec3 getLastPos()
-    {
-        return lastPos;
-    }
-
-    private static final float exhaustionMultiplier = 0.175f;
 
     public int getThirst()
     {
@@ -96,8 +87,9 @@ public class PlayerThirst implements IThirst
                 player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("stuffed"));
         boolean isSaturated = checkLetsDoBreweryEffects &&
                 player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("saturated"));
+        boolean isSitting = player.isPassenger();
 
-        if (!isNourished && !isStuffed && !isSaturated)
+        if (!isSitting && !isNourished && !isStuffed && !isSaturated)
         {
             updateExhaustion(player);
         }
