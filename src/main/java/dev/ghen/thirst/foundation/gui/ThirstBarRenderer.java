@@ -1,14 +1,13 @@
 package dev.ghen.thirst.foundation.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.teamlapen.vampirism.api.VampirismAPI;
 import de.teamlapen.vampirism.util.Helper;
-import dev.ghen.thirst.foundation.config.ClientConfig;
-import net.minecraft.client.gui.GuiGraphics;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
+import dev.ghen.thirst.foundation.config.ClientConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +16,6 @@ import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.fml.ModList;
 
 public class ThirstBarRenderer
 {
@@ -42,6 +40,10 @@ public class ThirstBarRenderer
                     cancelRender =true;
                     return;
                 }
+            }
+            if(!gui.getMinecraft().player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getShouldTickThirst()){
+                cancelRender = true;
+                return;
             }
             gui.setupOverlayRenderState(true, false);
             render(gui, screenWidth, screenHeight, poseStack);

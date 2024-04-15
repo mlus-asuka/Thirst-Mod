@@ -1,6 +1,7 @@
 package dev.ghen.thirst.content.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
@@ -49,6 +50,21 @@ public class CommandInit {
                                             context.getSource().sendSuccess(()->MutableComponent.create(new TranslatableContents("command.thirst.set","command.thirst.set",arg)),false);
                                             return 0;
                                         })))
-                )));
+                ))
+                .then(Commands.literal("enable").then(Commands.argument("Player",EntityArgument.player())
+                        .then(Commands.argument("bool", BoolArgumentType.bool())
+                                .executes(context ->{
+                                    Player player = EntityArgument.getPlayer(context,"Player");
+                                    boolean shouldTick = BoolArgumentType.getBool(context,"bool");
+                                    IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+                                    thirstData.setShouldTickThirst(shouldTick);
+                                    if(shouldTick){
+                                        context.getSource().sendSuccess(()->MutableComponent.create(new TranslatableContents("command.thirst.enable","command.thirst.enable",new Object[]{player.getName()})),false);
+                                    }else {
+                                        context.getSource().sendSuccess(()->MutableComponent.create(new TranslatableContents("command.thirst.disable","command.thirst.disable",new Object[]{player.getName()})),false);
+                                    }
+                                    return 0;
+                                }))))
+        );
     }
 }

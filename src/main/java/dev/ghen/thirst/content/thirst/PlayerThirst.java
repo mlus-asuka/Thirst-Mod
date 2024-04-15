@@ -29,6 +29,7 @@ public class PlayerThirst implements IThirst
     int syncTimer = 0;
     float prevTickExhaustion = 0.0F;
     boolean justHealed = false;
+    boolean shouldTickThirst = true;
 
     public int getThirst()
     {
@@ -60,6 +61,11 @@ public class PlayerThirst implements IThirst
         exhaustion = value;
     }
 
+    @Override
+    public void setShouldTickThirst(boolean value){shouldTickThirst = value;}
+    @Override
+    public boolean getShouldTickThirst(){return shouldTickThirst;}
+
     public void drink(Player player, int thirst, int quenched)
     {
         this.thirst = Math.min(this.thirst + thirst, 20);
@@ -74,6 +80,9 @@ public class PlayerThirst implements IThirst
         Difficulty difficulty = player.level().getDifficulty();
 
         if(player.getAbilities().invulnerable)
+            return;
+
+        if(!shouldTickThirst)
             return;
 
         if(checkTombstoneEffects && player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("ghostly_shape")))
