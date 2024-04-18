@@ -33,7 +33,7 @@ public class MixinWaterBlockInteraction
         CompoundTag purityTag = new CompoundTag();
         purityTag.putInt("Purity", WaterPurity.getBlockPurity(level, pos));
 
-        FaucetBehaviorsManagerAccessor.invokePrepareToTransferBottle(faucetTank, (SoftFluid) VanillaSoftFluids.WATER.get(), purityTag);
+        FaucetBehaviorsManagerAccessor.invokePrepareToTransferBottle(faucetTank, VanillaSoftFluids.WATER.get(), purityTag);
         if (fillAction == null || fillAction.tryExecute()) {
             cir.setReturnValue(InteractionResult.SUCCESS);
         }

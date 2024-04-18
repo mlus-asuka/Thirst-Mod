@@ -40,6 +40,11 @@ public class ThirstBarRenderer
                     return;
                 }
             }
+
+            if(!minecraft.player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getShouldTickThirst()){
+                cancelRender = true;
+                return;
+            }
             gui.setupOverlayRenderState(true, false);
             render(gui, screenWidth, screenHeight, poseStack);
         }

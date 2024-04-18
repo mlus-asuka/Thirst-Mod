@@ -11,7 +11,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PacketDistributor;
 import vectorwing.farmersdelight.common.registry.ModEffects;
 
@@ -29,14 +28,7 @@ public class PlayerThirst implements IThirst
     int syncTimer = 0;
     float prevTickExhaustion = 0.0F;
     boolean justHealed = false;
-    Vec3 lastPos = Vec3.ZERO;
-
-    public Vec3 getLastPos()
-    {
-        return lastPos;
-    }
-
-    private static final float exhaustionMultiplier = 0.175f;
+    boolean shouldTickThirst = true;
 
     public int getThirst()
     {
@@ -68,6 +60,11 @@ public class PlayerThirst implements IThirst
         exhaustion = value;
     }
 
+    @Override
+    public void setShouldTickThirst(boolean value){shouldTickThirst = value;}
+    @Override
+    public boolean getShouldTickThirst(){return shouldTickThirst;}
+
     public void drink(Player player, int thirst, int quenched)
     {
         this.thirst = Math.min(this.thirst + thirst, 20);
@@ -84,18 +81,20 @@ public class PlayerThirst implements IThirst
         if(player.getAbilities().invulnerable)
             return;
 
-        if(checkTombstoneEffects && player.hasEffect(ovh.corail.tombstone.registry.ModEffects.ghostly_shape))
+        if(!shouldTickThirst)
+            return;
+
+        if(checkTombstoneEffects && player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("ghostly_shape")))
             return;
 
         if(checkVampirismEffects && Helper.isVampire(player))
             return;
 
         boolean isNourished = checkFDEffects && player.hasEffect(ModEffects.NOURISHMENT.get());
-        boolean isStuffed = checkLetsDoBakeryEffects &&
-                player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("stuffed"));
 
-        if (!isNourished && !isStuffed)
-        {
+        boolean isSitting = player.isPassenger();
+
+        if (!isSitting && !isNourished) {
             updateExhaustion(player);
         }
 
