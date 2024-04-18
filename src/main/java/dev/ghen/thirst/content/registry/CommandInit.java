@@ -1,6 +1,7 @@
 package dev.ghen.thirst.content.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
@@ -20,6 +21,7 @@ public class CommandInit {
     public static void RegisterCommand(RegisterCommandsEvent event){
         CommandDispatcher<CommandSourceStack> dispatcher=event.getDispatcher();
         dispatcher.register(Commands.literal("thirst")
+                .requires(cs->cs.hasPermission(2))
                 .then(Commands.literal("query").then(Commands.argument("Player", EntityArgument.player())
                         .executes(context -> {
                                     Player player = EntityArgument.getPlayer(context,"Player");
@@ -43,6 +45,21 @@ public class CommandInit {
                                             context.getSource().sendSuccess(new TranslatableComponent("command.thirst.set",thirst,quenched),false);
                                             return 0;
                                         })))
-                )));
+                ))
+                .then(Commands.literal("enable").then(Commands.argument("Player",EntityArgument.player())
+                        .then(Commands.argument("bool", BoolArgumentType.bool())
+                                .executes(context ->{
+                                    Player player = EntityArgument.getPlayer(context,"Player");
+                                    boolean shouldTick = BoolArgumentType.getBool(context,"bool");
+                                    IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+                                    thirstData.setShouldTickThirst(shouldTick);
+                                    if(shouldTick){
+                                        context.getSource().sendSuccess(new TranslatableComponent("command.thirst.enable",player.getName()),false);
+                                    }else {
+                                        context.getSource().sendSuccess(new TranslatableComponent("command.thirst.disable",player.getName()),false);
+                                    }
+                                    return 0;
+                                }))))
+        );
     }
 }

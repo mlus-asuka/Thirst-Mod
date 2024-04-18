@@ -15,8 +15,10 @@ public interface IThirst
     void tick(Player player);
     void drink(Player player, int thirst, int quenched);
     void updateThirstData(Player player);
-    void copy(IThirst cap);
     void setJustHealed();
+    void setShouldTickThirst(boolean value);
+    boolean getShouldTickThirst();
+    void copy(IThirst cap);
 
     CompoundTag serializeNBT();
     void deserializeNBT(CompoundTag tag);
