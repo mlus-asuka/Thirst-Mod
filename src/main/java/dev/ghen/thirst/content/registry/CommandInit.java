@@ -6,15 +6,19 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
+import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
+import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = Thirst.ID)
 public class CommandInit {
@@ -54,10 +58,12 @@ public class CommandInit {
                 .then(Commands.literal("enable").then(Commands.argument("Player",EntityArgument.player())
                         .then(Commands.argument("bool", BoolArgumentType.bool())
                                 .executes(context ->{
-                                    Player player = EntityArgument.getPlayer(context,"Player");
+                                    ServerPlayer player = EntityArgument.getPlayer(context,"Player");
                                     boolean shouldTick = BoolArgumentType.getBool(context,"bool");
                                     IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
                                     thirstData.setShouldTickThirst(shouldTick);
+                                    ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+                                            new PlayerThirstSyncMessage(shouldTick));
                                     if(shouldTick){
                                         context.getSource().sendSuccess(()->MutableComponent.create(new TranslatableContents("command.thirst.enable","command.thirst.enable",new Object[]{player.getName()})),false);
                                     }else {

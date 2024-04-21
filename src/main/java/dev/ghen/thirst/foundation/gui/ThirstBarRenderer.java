@@ -29,9 +29,9 @@ public class ThirstBarRenderer
     protected final static RandomSource random = RandomSource.create();
     public static IGuiOverlay THIRST_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) ->
     {
-        boolean isMounted = gui.getMinecraft().player.getVehicle() instanceof LivingEntity;
+        boolean isMounted = minecraft.player.getVehicle() instanceof LivingEntity;
         cancelRender =false;
-        if (!isMounted && !gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements())
+        if (!isMounted && !minecraft.options.hideGui && gui.shouldDrawSurvivalElements())
         {
             if(checkIfPlayerIsVampire)
             {
@@ -41,7 +41,7 @@ public class ThirstBarRenderer
                     return;
                 }
             }
-            if(!gui.getMinecraft().player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getShouldTickThirst()){
+            if(!minecraft.player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getShouldTickThirst()){
                 cancelRender = true;
                 return;
             }

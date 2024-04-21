@@ -30,6 +30,7 @@ public class PlayerThirst implements IThirst
     float prevTickExhaustion = 0.0F;
     boolean justHealed = false;
     boolean shouldTickThirst = true;
+    boolean init = true;
 
     public int getThirst()
     {
@@ -82,8 +83,13 @@ public class PlayerThirst implements IThirst
         if(player.getAbilities().invulnerable)
             return;
 
-        if(!shouldTickThirst)
+        if(!shouldTickThirst) {
+            if (init) {
+                init = false;
+                updateThirstData(player);
+            }
             return;
+        }
 
         if(checkTombstoneEffects && player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("ghostly_shape")))
             return;
@@ -150,7 +156,7 @@ public class PlayerThirst implements IThirst
     public void updateThirstData(Player player)
     {
         ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                new PlayerThirstSyncMessage(thirst, quenched, exhaustion));
+                new PlayerThirstSyncMessage(thirst, quenched, exhaustion,shouldTickThirst));
     }
 
     @Override
@@ -194,6 +200,7 @@ public class PlayerThirst implements IThirst
         nbt.putInt("thirst", thirst);
         nbt.putInt("quenched", quenched);
         nbt.putFloat("exhaustion", exhaustion);
+        nbt.putBoolean("enable",shouldTickThirst);
 
         return nbt;
     }
@@ -203,6 +210,6 @@ public class PlayerThirst implements IThirst
         thirst = nbt.getInt("thirst");
         quenched = nbt.getInt("quenched");
         exhaustion = nbt.getFloat("exhaustion");
-
+        shouldTickThirst = nbt.getBoolean("enable");
     }
 }
