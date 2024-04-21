@@ -6,14 +6,17 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
+import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
+import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = Thirst.ID)
 public class CommandInit {
@@ -25,7 +28,7 @@ public class CommandInit {
                 .requires(cs->cs.hasPermission(2))
                 .then(Commands.literal("query").then(Commands.argument("Player", EntityArgument.player())
                         .executes(context -> {
-                                    Player player = EntityArgument.getPlayer(context,"Player");
+                                    ServerPlayer player = EntityArgument.getPlayer(context,"Player");
                                     IThirst iThirst = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
                                     int thirst = iThirst.getThirst();
                                     int quenched = iThirst.getQuenched();
@@ -37,7 +40,7 @@ public class CommandInit {
                         .then(Commands.argument("thirst", IntegerArgumentType.integer(0,20))
                                 .then(Commands.argument("quenched", IntegerArgumentType.integer(0,20))
                                         .executes(context -> {
-                                            Player player = EntityArgument.getPlayer(context,"Player");
+                                            ServerPlayer player = EntityArgument.getPlayer(context,"Player");
                                             IThirst iThirst = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
                                             int thirst= IntegerArgumentType.getInteger(context,"thirst");
                                             int quenched= IntegerArgumentType.getInteger(context,"quenched");
@@ -50,10 +53,12 @@ public class CommandInit {
                 .then(Commands.literal("enable").then(Commands.argument("Player",EntityArgument.player())
                         .then(Commands.argument("bool", BoolArgumentType.bool())
                                 .executes(context ->{
-                                    Player player = EntityArgument.getPlayer(context,"Player");
+                                    ServerPlayer player = EntityArgument.getPlayer(context,"Player");
                                     boolean shouldTick = BoolArgumentType.getBool(context,"bool");
                                     IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
                                     thirstData.setShouldTickThirst(shouldTick);
+                                    ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+                                            new PlayerThirstSyncMessage(shouldTick));
                                     if(shouldTick){
                                         context.getSource().sendSuccess(Component.translatable("command.thirst.enable",player.getName()),false);
                                     }else {
