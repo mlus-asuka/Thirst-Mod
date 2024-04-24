@@ -205,6 +205,6 @@ public class PlayerThirst implements IThirst
         thirst = nbt.getInt("thirst");
         quenched = nbt.getInt("quenched");
         exhaustion = nbt.getFloat("exhaustion");
-        shouldTickThirst = nbt.getBoolean("enable");
+        shouldTickThirst = !nbt.contains("enable") || nbt.getBoolean("enable");
     }
 }

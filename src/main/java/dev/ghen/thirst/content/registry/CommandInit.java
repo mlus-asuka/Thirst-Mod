@@ -18,6 +18,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @Mod.EventBusSubscriber(modid = Thirst.ID)
 public class CommandInit {
 
@@ -50,19 +53,24 @@ public class CommandInit {
                                             return 0;
                                         })))
                 ))
-                .then(Commands.literal("enable").then(Commands.argument("Player",EntityArgument.player())
+                .then(Commands.literal("enable").then(Commands.argument("Player",EntityArgument.players())
                         .then(Commands.argument("bool", BoolArgumentType.bool())
                                 .executes(context ->{
-                                    ServerPlayer player = EntityArgument.getPlayer(context,"Player");
+                                    Collection<ServerPlayer> players = EntityArgument.getPlayers(context,"Player");
                                     boolean shouldTick = BoolArgumentType.getBool(context,"bool");
-                                    IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
-                                    thirstData.setShouldTickThirst(shouldTick);
-                                    ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
-                                            new PlayerThirstSyncMessage(shouldTick));
+                                    Collection<Component> playersName = new ArrayList<>();
+                                    for(ServerPlayer player:players){
+                                        IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+                                        thirstData.setShouldTickThirst(shouldTick);
+                                        ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
+                                                new PlayerThirstSyncMessage(shouldTick));
+                                        playersName.add(player.getName());
+                                    }
+
                                     if(shouldTick){
-                                        context.getSource().sendSuccess(Component.translatable("command.thirst.enable",player.getName()),false);
+                                        context.getSource().sendSuccess(Component.translatable("command.thirst.enable",playersName.toArray()),false);
                                     }else {
-                                        context.getSource().sendSuccess(Component.translatable("command.thirst.disable",player.getName()),false);
+                                        context.getSource().sendSuccess(Component.translatable("command.thirst.disable",playersName.toArray()),false);
                                     }
                                     return 0;
                                 }))))
