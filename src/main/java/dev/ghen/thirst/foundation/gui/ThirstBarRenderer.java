@@ -41,7 +41,7 @@ public class ThirstBarRenderer
                     return;
                 }
             }
-            if(!minecraft.player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getShouldTickThirst()){
+            if(minecraft.player.isAlive() && !minecraft.player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getShouldTickThirst()){
                 cancelRender = true;
                 return;
             }
