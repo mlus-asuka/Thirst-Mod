@@ -1,6 +1,7 @@
 package dev.ghen.thirst.api;
 
 import com.momosoftworks.coldsweat.api.util.Temperature;
+import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
 import dev.ghen.thirst.foundation.config.KeyWordConfig;
@@ -33,6 +34,12 @@ public class ThirstHelper
             .getItemsWithValues(ItemSettingsConfig.FOODS.get()))
             .get();
 
+    private static boolean INITILIZED=false;
+
+    public static void init(){
+        ThirstEventFactory.onRegisterThirstValue();
+    }
+
     public static String keywordBlackList = KeyWordConfig.KEYWORD_BLACKLIST.get();
     public static String keywordDrink = KeyWordConfig.KEYWORD_DRINK.get();
     public static String keywordSoup = KeyWordConfig.KEYWORD_SOUP.get();
@@ -40,6 +47,11 @@ public class ThirstHelper
 
     public static boolean itemRestoresThirst(ItemStack itemStack)
     {
+        if(!INITILIZED){
+            init();
+            INITILIZED=true;
+        }
+
         return isDrink(itemStack) ||
                 isFood(itemStack) || checkKeywords(itemStack);
     }
@@ -58,24 +70,18 @@ public class ThirstHelper
     }
 
     /**
-     * Adds a hydration and "quenchness" value to an item via code, and treats it as food.
-     * Can be overwritten by the player in the config.
+     * Subscribe #{@link dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent} to use the api.
      * */
+    @Deprecated
     @SuppressWarnings("unused")
-    public static void addFood(Item item, int thirst, int quenched)
-    {
-        VALID_FOODS.put(item, new Number[]{thirst, quenched});
-    }
+    public static void addFood(Item item, int thirst, int quenched) {}
 
     /**
-     * Adds a hydration and "quenchness" value to an item via code, and treats it as a drink.
-     * Can be overwritten by the player in the config.
+     * Subscribe #{@link dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent} to use the api.
      * */
+    @Deprecated
     @SuppressWarnings("unused")
-    public static void addDrink(Item item, int thirst, int quenched)
-    {
-        VALID_DRINKS.put(item, new Number[]{thirst, quenched});
-    }
+    public static void addDrink(Item item, int thirst, int quenched) {}
 
     public static int getThirst(ItemStack itemStack)
     {
