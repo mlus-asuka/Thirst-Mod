@@ -5,6 +5,8 @@ import com.farmersrespite.core.registry.FRBlocks;
 import com.farmersrespite.core.registry.FRItems;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.content.registry.ItemInit;
+import dev.ghen.thirst.foundation.common.event.RegisterWaterContainerEvent;
+import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.util.MathHelper;
 import dev.ghen.thirst.foundation.util.ReflectionUtil;
@@ -87,6 +89,7 @@ public class WaterPurity
     {
         registerDispenserBehaviours();
         registerContainers();
+        ThirstEventFactory.onRegisterWaterContainer();
         registerFillables();
 
         if(ModList.get().isLoaded("farmersdelight")){
@@ -214,7 +217,10 @@ public class WaterPurity
     }
     /**
      * Registers new custom water container
+     * the container will be taken into consider of purity
+     * Don't use it directly. Trying to subscribe #{@link RegisterWaterContainerEvent}
      */
+    @Deprecated
     @SuppressWarnings("unused")
     public static void addContainer(ContainerWithPurity container)
     {
