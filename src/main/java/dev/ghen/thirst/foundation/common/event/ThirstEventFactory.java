@@ -7,4 +7,6 @@ public class ThirstEventFactory {
     public static void onRegisterThirstValue() {
         MinecraftForge.EVENT_BUS.post(new RegisterThirstValueEvent());
     }
+
+    public static void onRegisterWaterContainer(){MinecraftForge.EVENT_BUS.post(new RegisterWaterContainerEvent());}
 }

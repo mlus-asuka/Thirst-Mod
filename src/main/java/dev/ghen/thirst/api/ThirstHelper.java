@@ -1,6 +1,7 @@
 package dev.ghen.thirst.api;
 
 import com.momosoftworks.coldsweat.api.util.Temperature;
+import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
 import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
@@ -70,14 +71,14 @@ public class ThirstHelper
     }
 
     /**
-     * Subscribe #{@link dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent} to use the api.
+     * Subscribe #{@link RegisterThirstValueEvent} to use the api.
      * */
     @Deprecated
     @SuppressWarnings("unused")
     public static void addFood(Item item, int thirst, int quenched) {}
 
     /**
-     * Subscribe #{@link dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent} to use the api.
+     * Subscribe #{@link RegisterThirstValueEvent} to use the api.
      * */
     @Deprecated
     @SuppressWarnings("unused")
