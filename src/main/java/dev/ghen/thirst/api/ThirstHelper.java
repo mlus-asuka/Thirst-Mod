@@ -1,5 +1,7 @@
 package dev.ghen.thirst.api;
 
+import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
+import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
 import dev.ghen.thirst.foundation.config.KeyWordConfig;
@@ -34,6 +36,12 @@ public class ThirstHelper
             .getItemsWithValues(ItemSettingsConfig.FOODS.get()))
             .get();
 
+    private static boolean INITILIZED=false;
+
+    public static void init(){
+        ThirstEventFactory.onRegisterThirstValue();
+    }
+
     public static String keywordBlackList = KeyWordConfig.KEYWORD_BLACKLIST.get();
     public static String keywordDrink = KeyWordConfig.KEYWORD_DRINK.get();
     public static String keywordSoup = KeyWordConfig.KEYWORD_SOUP.get();
@@ -41,6 +49,11 @@ public class ThirstHelper
 
     public static boolean itemRestoresThirst(ItemStack itemStack)
     {
+        if(!INITILIZED){
+            init();
+            INITILIZED=true;
+        }
+
         return isDrink(itemStack) ||
                 isFood(itemStack) || checkKeywords(itemStack);
     }
@@ -59,24 +72,18 @@ public class ThirstHelper
     }
 
     /**
-     * Adds a hydration and "quenchness" value to an item via code, and treats it as food.
-     * Can be overwritten by the player in the config.
+     * Subscribe #{@link RegisterThirstValueEvent} to use the api.
      * */
+    @Deprecated
     @SuppressWarnings("unused")
-    public static void addFood(Item item, int thirst, int quenched)
-    {
-        VALID_FOODS.put(item, new Number[]{thirst, quenched});
-    }
+    public static void addFood(Item item, int thirst, int quenched) {}
 
     /**
-     * Adds a hydration and "quenchness" value to an item via code, and treats it as a drink.
-     * Can be overwritten by the player in the config.
+     * Subscribe #{@link RegisterThirstValueEvent} to use the api.
      * */
+    @Deprecated
     @SuppressWarnings("unused")
-    public static void addDrink(Item item, int thirst, int quenched)
-    {
-        VALID_DRINKS.put(item, new Number[]{thirst, quenched});
-    }
+    public static void addDrink(Item item, int thirst, int quenched) {}
 
     public static int getThirst(ItemStack itemStack)
     {
@@ -144,7 +151,7 @@ public class ThirstHelper
         Level level = player.getLevel();
 
         if(level.dimensionType().ultraWarm())
-            return 3.0f;
+            return CommonConfig.NETHER_THIRST_DEPLETION_MODIFIER.get().floatValue();
         else
         {
             Biome biome = level.getBiome(pos).value();
@@ -216,8 +223,8 @@ public class ThirstHelper
             return true;
         }
 
-        pattern=keywordSoup;
-        matcher= Pattern.compile(pattern, Pattern.CASE_INSENSITIVE)
+        pattern = keywordSoup;
+        matcher = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE)
                 .matcher(itemStack.getDescriptionId());
 
         hasWater=matcher.find();
@@ -230,11 +237,11 @@ public class ThirstHelper
             return true;
         }
 
-        pattern=keywordFruit;
-        matcher= Pattern.compile(pattern, Pattern.CASE_INSENSITIVE)
+        pattern = keywordFruit;
+        matcher = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE)
                 .matcher(itemStack.getDescriptionId());
 
-        hasWater=matcher.find();
+        hasWater = matcher.find();
         if(hasWater)
             VALID_FOODS.put(itemStack.getItem(), new Number[]{
                     KeyWordConfig.getFruitHydration(),

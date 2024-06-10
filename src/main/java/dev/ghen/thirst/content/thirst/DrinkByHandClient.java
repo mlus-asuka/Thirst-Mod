@@ -1,7 +1,6 @@
 package dev.ghen.thirst.content.thirst;
 
 import dev.ghen.thirst.foundation.config.ClientConfig;
-import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
 import dev.ghen.thirst.foundation.network.message.DrinkByHandMessage;
 import dev.ghen.thirst.foundation.util.MathHelper;
