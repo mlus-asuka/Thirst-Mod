@@ -2,8 +2,7 @@ package dev.ghen.thirst.content.purity;
 
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.content.registry.ItemInit;
-import dev.ghen.thirst.foundation.common.event.RegisterWaterContainerEvent;
-import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
+import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.util.MathHelper;
 import dev.ghen.thirst.foundation.util.ReflectionUtil;
@@ -54,7 +53,10 @@ import toughasnails.api.item.TANItems;
 import umpaz.brewinandchewin.common.registry.BCItems;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -84,7 +86,6 @@ public class WaterPurity
     {
         registerDispenserBehaviours();
         registerContainers();
-        ThirstEventFactory.onRegisterWaterContainer();
         registerFillables();
 
         if(ModList.get().isLoaded("farmersrespite"))
@@ -215,7 +216,7 @@ public class WaterPurity
     /**
      * Registers new custom water container
      * the container will be taken into consider of purity
-     * Don't use it directly. Trying to subscribe #{@link RegisterWaterContainerEvent}
+     * Don't use it directly. Trying to subscribe #{@link RegisterThirstValueEvent}
      */
     @Deprecated
     @SuppressWarnings("unused")
