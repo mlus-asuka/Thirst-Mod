@@ -1,6 +1,6 @@
 package dev.ghen.thirst.api;
 
-import com.momosoftworks.coldsweat.api.util.Temperature;
+import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
 import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
 import dev.ghen.thirst.foundation.config.CommonConfig;
@@ -9,6 +9,7 @@ import dev.ghen.thirst.foundation.config.KeyWordConfig;
 import dev.ghen.thirst.foundation.util.ConfigHelper;
 import dev.ghen.thirst.foundation.util.LoadedValue;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,14 +73,14 @@ public class ThirstHelper
     /**
      * Subscribe #{@link RegisterThirstValueEvent} to use the api.
      * */
-    @Deprecated
+    @Deprecated(forRemoval = true, since = "1.3.8")
     @SuppressWarnings("unused")
     public static void addFood(Item item, int thirst, int quenched) {}
 
     /**
      * Subscribe #{@link RegisterThirstValueEvent} to use the api.
      * */
-    @Deprecated
+    @Deprecated(forRemoval = true, since = "1.3.8")
     @SuppressWarnings("unused")
     public static void addDrink(Item item, int thirst, int quenched) {}
 
@@ -89,11 +89,6 @@ public class ThirstHelper
         Item item = itemStack.getItem();
 
         if(VALID_DRINKS.containsKey(item)) {
-            if (!CommonConfig.ENABLE_DRINKS_NUTRITION.get()){
-                if (item.getFoodProperties() != null) {
-                    Objects.requireNonNull(item.getFoodProperties()).nutrition = 0;
-                }
-            }
             return VALID_DRINKS.get(item)[0].intValue();
         }
         else
@@ -115,8 +110,7 @@ public class ThirstHelper
         if(!hasPurity(item))
             return -1;
         else {
-            assert item.getTag() != null;
-            return item.getTag().getInt("Purity");
+            return item.get(ThirstComponent.PURITY);
         }
     }
 
@@ -127,7 +121,7 @@ public class ThirstHelper
     public static float getExhaustionFireProtModifier(Player player)
     {
         final float perLevelMultiplier = 0.0625f;
-        int totalLevels = EnchantmentHelper.getDamageProtection(player.getArmorSlots(), player.damageSources().onFire()) / 2;
+        float totalLevels = EnchantmentHelper.getDamageProtection((ServerLevel) player.level(),player, player.damageSources().onFire()) / 2;
 
         return 1.0f - ((totalLevels * perLevelMultiplier) * 0.75f);
     }
@@ -165,7 +159,7 @@ public class ThirstHelper
 
             if(useColdSweatCaps)
                 {
-                    temp = (float) (Temperature.get(player, Temperature.Type.BODY) / 100f);
+//                    temp = (float) (Temperature.get(player, Temperature.Type.BODY) / 100f);
                 }
             else
             {
@@ -200,7 +194,7 @@ public class ThirstHelper
         if(!KeyWordConfig.ENABLE_KEYWORD_CONFIG.get())
             return false;
 
-        if(!itemStack.isEdible())
+        if(itemStack.getFoodProperties(null) != null)
             return false;
 
         String pattern = keywordBlackList;

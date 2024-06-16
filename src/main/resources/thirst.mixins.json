@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "package": "dev.ghen.thirst.foundation.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "thirst.refmap.json",
+  "mixins": [
+    "MixinBottleItem",
+    "MixinBucketItem",
+    "MixinCampfireBlockEntity",
+    "MixinFoodData",
+    "MixinItemStack",
+    "MixinLayeredCauldronBlock",
+    "MixinPotionItem",
+    "jade.MixinFluidView",
+    "toughasnails.MixinServerConfig",
+    "toughasnails.MixinThirstHelperImpl"
+  ],
+  "client": [
+    "MixinGui",
+    "MixinGuiGraphics",
+    "MixinLocalPlayer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}

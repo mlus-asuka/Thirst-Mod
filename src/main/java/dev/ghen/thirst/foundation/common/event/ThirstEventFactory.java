@@ -1,10 +1,10 @@
 package dev.ghen.thirst.foundation.common.event;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class ThirstEventFactory {
 
     public static void onRegisterThirstValue() {
-        MinecraftForge.EVENT_BUS.post(new RegisterThirstValueEvent());
+        NeoForge.EVENT_BUS.post(new RegisterThirstValueEvent());
     }
 }

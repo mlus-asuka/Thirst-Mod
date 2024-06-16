@@ -1,9 +1,10 @@
 package dev.ghen.thirst.foundation.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
+
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,45 +12,44 @@ import java.nio.file.Paths;
 
 public class CommonConfig
 {
-    private static final ForgeConfigSpec SPEC;
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
 
-    public static final ForgeConfigSpec.ConfigValue<Number> THIRST_DEPLETION_MODIFIER;
-    public static final ForgeConfigSpec.DoubleValue NETHER_THIRST_DEPLETION_MODIFIER;
-    public static final ForgeConfigSpec.IntValue FIRE_RESISTANCE_DEHYDRATION;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MOVE_SLOW_WHEN_THIRSTY;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_DRINKS_NUTRITION;
-    public static final ForgeConfigSpec.ConfigValue<Integer> WATER_BOTTLE_STACKSIZE;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DEHYDRATION_HALTS_HEALTH_REGEN;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HEALTH_REGEN_DEHYDRATION_IS_BIOME_DEPENDENT;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> HEALTH_REGEN_DEPLETES_HYDRATION;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CAN_DRINK_BY_HAND;
+    public static final ModConfigSpec.ConfigValue<Number> THIRST_DEPLETION_MODIFIER;
+    public static final ModConfigSpec.DoubleValue NETHER_THIRST_DEPLETION_MODIFIER;
+    public static final ModConfigSpec.IntValue FIRE_RESISTANCE_DEHYDRATION;
+    public static final ModConfigSpec.ConfigValue<Boolean> MOVE_SLOW_WHEN_THIRSTY;
+    public static final ModConfigSpec.ConfigValue<Integer> WATER_BOTTLE_STACKSIZE;
+    public static final ModConfigSpec.ConfigValue<Boolean> DEHYDRATION_HALTS_HEALTH_REGEN;
+    public static final ModConfigSpec.ConfigValue<Boolean> HEALTH_REGEN_DEHYDRATION_IS_BIOME_DEPENDENT;
+    public static final ModConfigSpec.ConfigValue<Boolean> HEALTH_REGEN_DEPLETES_HYDRATION;
+    public static final ModConfigSpec.ConfigValue<Boolean> CAN_DRINK_BY_HAND;
 
-    public static final ForgeConfigSpec.ConfigValue<Number> HAND_DRINKING_HYDRATION;
-    public static final ForgeConfigSpec.ConfigValue<Number> HAND_DRINKING_QUENCHED;
+    public static final ModConfigSpec.ConfigValue<Number> HAND_DRINKING_HYDRATION;
+    public static final ModConfigSpec.ConfigValue<Number> HAND_DRINKING_QUENCHED;
 
-    public static final ForgeConfigSpec.ConfigValue<Number> MOUNTAINS_Y;
-    public static final ForgeConfigSpec.ConfigValue<Number> CAVES_Y;
-    public static final ForgeConfigSpec.ConfigValue<Number> RUNNING_WATER_PURIFICATION_AMOUNT;
+    public static final ModConfigSpec.ConfigValue<Number> MOUNTAINS_Y;
+    public static final ModConfigSpec.ConfigValue<Number> CAVES_Y;
+    public static final ModConfigSpec.ConfigValue<Number> RUNNING_WATER_PURIFICATION_AMOUNT;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> DEFAULT_PURITY;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> QUENCH_THIRST_WHEN_DEBUFFED;
-    public static final ForgeConfigSpec.ConfigValue<Number> DIRTY_POISON_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> DIRTY_NAUSEA_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> SLIGHTLY_DIRTY_POISON_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> SLIGHTLY_DIRTY_NAUSEA_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> ACCEPTABLE_POISON_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> ACCEPTABLE_NAUSEA_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> PURIFIED_POISON_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> PURIFIED_NAUSEA_PERCENTAGE;
-    public static final ForgeConfigSpec.ConfigValue<Number> KETTLE_PURIFICATION_LEVELS;
+    public static final ModConfigSpec.ConfigValue<Integer> DEFAULT_PURITY;
+    public static final ModConfigSpec.ConfigValue<Boolean> QUENCH_THIRST_WHEN_DEBUFFED;
+    public static final ModConfigSpec.ConfigValue<Number> DIRTY_POISON_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> DIRTY_NAUSEA_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> SLIGHTLY_DIRTY_POISON_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> SLIGHTLY_DIRTY_NAUSEA_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> ACCEPTABLE_POISON_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> ACCEPTABLE_NAUSEA_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> PURIFIED_POISON_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> PURIFIED_NAUSEA_PERCENTAGE;
+    public static final ModConfigSpec.ConfigValue<Number> KETTLE_PURIFICATION_LEVELS;
 
-    public static final ForgeConfigSpec.ConfigValue<Number> FERMENTATION_MOLDING_THRESHOLD;
-    public static final ForgeConfigSpec.ConfigValue<Number> FERMENTATION_MOLDING_HARSHNESS;
+    public static final ModConfigSpec.ConfigValue<Number> FERMENTATION_MOLDING_THRESHOLD;
+    public static final ModConfigSpec.ConfigValue<Number> FERMENTATION_MOLDING_HARSHNESS;
 
-    public static final ForgeConfigSpec.ConfigValue<Number> SAND_FILTER_FILTRATION_AMOUNT;
-    public static final ForgeConfigSpec.ConfigValue<Number> SAND_FILTER_MB_PER_TICK;
+    public static final ModConfigSpec.ConfigValue<Number> SAND_FILTER_FILTRATION_AMOUNT;
+    public static final ModConfigSpec.ConfigValue<Number> SAND_FILTER_MB_PER_TICK;
 
     static
     {
@@ -58,7 +58,6 @@ public class CommonConfig
         NETHER_THIRST_DEPLETION_MODIFIER = BUILDER.comment("How much is hydration depletion in nether faster than overworld").defineInRange("netherThirstDeletionModifier",3.0D,1.0D,5.0D);
         FIRE_RESISTANCE_DEHYDRATION = BUILDER.comment("How much faster is hydration depletion when players with fire resistance(Range 0 to 100, 0 means not to depletion,100 means depletion like normal)").defineInRange("fireResistanceDehydration",0,0,100);
         MOVE_SLOW_WHEN_THIRSTY=BUILDER.comment("Whether players won't be able to sprint if their thirst bar is 3 droplets or less").define("moveSlowWhenThirsty",true);
-        ENABLE_DRINKS_NUTRITION=BUILDER.comment("Whether foods labeled as drinks will restore hunger").define("enableDrinksNutrition",true);
         BUILDER.pop();
 
         BUILDER.push("Drinking Mechanics");
@@ -107,7 +106,7 @@ public class CommonConfig
         SPEC = BUILDER.build();
     }
 
-    public static void setup()
+    public static void setup(ModContainer modContainer)
     {
         Path configPath = FMLPaths.CONFIGDIR.get();
         Path configFolder = Paths.get(configPath.toAbsolutePath().toString(), "thirst");
@@ -118,6 +117,6 @@ public class CommonConfig
         }
         catch (Exception ignored) {}
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC, "thirst/common.toml");
+        modContainer.registerConfig(ModConfig.Type.COMMON, SPEC, "thirst/common.toml");
     }
 }

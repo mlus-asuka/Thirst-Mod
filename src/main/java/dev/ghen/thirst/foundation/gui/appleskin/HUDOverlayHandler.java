@@ -4,23 +4,21 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
-import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
+import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.config.ClientConfig;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.GuiOverlayManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.lwjgl.opengl.GL11;
 import squeek.appleskin.ModConfig;
 import squeek.appleskin.util.IntPoint;
@@ -36,49 +34,56 @@ public class HUDOverlayHandler {
     protected static int foodIconsOffset;
     public static final Vector<squeek.appleskin.util.IntPoint> foodBarOffsets = new Vector<>();
     private static final Random random = new Random();
-    private static final ResourceLocation modIcons;
-    static ResourceLocation THIRST_LEVEL_ELEMENT;
+    private static final ResourceLocation modIcons = Thirst.asResource("textures/gui/appleskin_icons.png");
 
     public HUDOverlayHandler() {
     }
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new HUDOverlayHandler());
+        NeoForge.EVENT_BUS.register(new HUDOverlayHandler());
     }
 
-    @SubscribeEvent
-    public void onRenderGuiOverlayPre(RenderGuiOverlayEvent.Pre event) {
-        if (event.getOverlay() == GuiOverlayManager.findOverlay(THIRST_LEVEL_ELEMENT)) {
-            Minecraft mc = Minecraft.getInstance();
-            ForgeGui gui = (ForgeGui)mc.gui;
-            boolean isMounted = mc.player.getVehicle() instanceof LivingEntity;
-            boolean isAlive = mc.player.isAlive();
-            //stop getExhaustion when player is dead to prevent error log spam
-            if (isAlive && ModConfig.SHOW_FOOD_EXHAUSTION_UNDERLAY.get() && !isMounted && !mc.options.hideGui && gui.shouldDrawSurvivalElements() && !ThirstBarRenderer.cancelRender) {
-                renderExhaustion(gui, event.getGuiGraphics());
-            }
-        }
-
+    public static boolean shouldDrawSurvivalElements(Minecraft minecraft) {
+        return minecraft.gameMode.canHurtPlayer() && minecraft.getCameraEntity() instanceof Player;
     }
 
-    @SubscribeEvent
-    public void onRenderGuiOverlayPost(RenderGuiOverlayEvent.Post event) {
-        if (event.getOverlay() == GuiOverlayManager.findOverlay(THIRST_LEVEL_ELEMENT)) {
+    public static class ExhaustionOverlay extends squeek.appleskin.client.HUDOverlayHandler.Overlay{
+        public static final ResourceLocation ID = Thirst.asResource("exhaustion_overlay");
+        public ExhaustionOverlay() {}
+        @Override
+        public void render(Minecraft minecraft, Player player, GuiGraphics guiGraphics, int left, int right, int top, int guiTicks) {
             Minecraft mc = Minecraft.getInstance();
-            ForgeGui gui = (ForgeGui)mc.gui;
             boolean isMounted = mc.player.getVehicle() instanceof LivingEntity;
             boolean isAlive = mc.player.isAlive();
 
-            if (isAlive && ModConfig.SHOW_SATURATION_OVERLAY.get() && !isMounted && !mc.options.hideGui && gui.shouldDrawSurvivalElements() && !ThirstBarRenderer.cancelRender) {
-                renderThirstOverlay(event.getGuiGraphics());
+            if (isAlive && !isMounted && !mc.options.hideGui && shouldDrawSurvivalElements(mc) && !ThirstBarRenderer.cancelRender) {
+                if(ModConfig.SHOW_FOOD_EXHAUSTION_UNDERLAY.get()){
+                    renderExhaustion(mc.gui,guiGraphics);
+                }
             }
         }
-
     }
 
-    public static void renderExhaustion(ForgeGui gui, GuiGraphics mStack)
+    public static class SaturationOverlay extends squeek.appleskin.client.HUDOverlayHandler.Overlay{
+        public static final ResourceLocation ID = Thirst.asResource("saturation_overlay");
+        public SaturationOverlay(){}
+        @Override
+        public void render(Minecraft minecraft, Player player, GuiGraphics guiGraphics, int left, int right, int top, int guiTicks) {
+            Minecraft mc = Minecraft.getInstance();
+            boolean isMounted = mc.player.getVehicle() instanceof LivingEntity;
+            boolean isAlive = mc.player.isAlive();
+
+            if (isAlive && !isMounted && !mc.options.hideGui && shouldDrawSurvivalElements(mc) && !ThirstBarRenderer.cancelRender) {
+                if(ModConfig.SHOW_SATURATION_OVERLAY.get()){
+                    renderThirstOverlay(guiGraphics);
+                }
+            }
+        }
+    }
+
+    public static void renderExhaustion(Gui gui, GuiGraphics mStack)
     {
-        foodIconsOffset = gui.rightHeight;
+        foodIconsOffset = gui.rightHeight +10;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -86,7 +91,7 @@ public class HUDOverlayHandler {
 
         int right = mc.getWindow().getGuiScaledWidth() / 2 + 91 + ClientConfig.THIRST_BAR_X_OFFSET.get();
         int top = mc.getWindow().getGuiScaledHeight() - foodIconsOffset + ClientConfig.THIRST_BAR_Y_OFFSET.get();
-        float exhaustion = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null).getExhaustion();
+        float exhaustion = player.getData(ModAttachment.PLAYER_THIRST).getExhaustion();
 
         drawExhaustionOverlay(exhaustion, mStack, right, top);
     }
@@ -99,10 +104,10 @@ public class HUDOverlayHandler {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         assert player != null;
-        IThirst thirstData = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+        IThirst thirstData = player.getData(ModAttachment.PLAYER_THIRST);
 
+        int right = mc.getWindow().getGuiScaledWidth() / 2 + 91 + ClientConfig.THIRST_BAR_X_OFFSET.get();
         int top = mc.getWindow().getGuiScaledHeight() - foodIconsOffset + ClientConfig.THIRST_BAR_Y_OFFSET.get();
-        int right = mc.getWindow().getGuiScaledWidth() / 2 + 91 + ClientConfig.THIRST_BAR_X_OFFSET.get(); // right of food bar
 
         generateHungerBarOffsets(top, right, mc.gui.getGuiTicks(), player);
 
@@ -121,17 +126,9 @@ public class HUDOverlayHandler {
         }
 
         ThirstValues thirstValues = new ThirstValues(ThirstHelper.getThirst(heldItem), ThirstHelper.getQuenched(heldItem));
-        //FoodValuesEvent foodValuesEvent = new FoodValuesEvent(player, heldItem, FoodHelper.getDefaultFoodValues(heldItem, player), modifiedFoodValues);
-
-        // notify everyone that we should render hunger hud overlay
-        /*HUDOverlayEvent.HungerRestored renderRenderEvent = new HUDOverlayEvent.HungerRestored(stats.getFoodLevel(), heldItem, modifiedFoodValues, right, top, poseStack);
-        MinecraftForge.EVENT_BUS.post(renderRenderEvent);
-        if (renderRenderEvent.isCanceled())
-            return;*/
 
         // calculate the final hunger and saturation
         int drinkThirst = thirstValues.thirst;
-        float thirstQuenchedIncrement = thirstValues.getQuenchedIncrement();
 
         // restored hunger/saturation overlay while holding food
         if(thirstData.getThirst() < 20)
@@ -185,8 +182,6 @@ public class HUDOverlayHandler {
             guiGraphics.blit(modIcons, x, y, u, v, iconSize, iconSize);
         }
 
-        // rebind default icons
-        RenderSystem.setShaderTexture(0, ThirstBarRenderer.MC_ICONS);
         disableAlpha();
     }
 
@@ -245,9 +240,6 @@ public class HUDOverlayHandler {
         enableAlpha(.75f);
         guiGraphics.blit(modIcons, right - width, top, 81 - width, 18, width, height);
         disableAlpha();
-
-        // rebind default icons
-        RenderSystem.setShaderTexture(0, ThirstBarRenderer.MC_ICONS);
     }
 
     public static void enableAlpha(float alpha)
@@ -264,10 +256,8 @@ public class HUDOverlayHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event)
+    public void onClientTick(ClientTickEvent.Pre event)
     {
-        if (event.phase != TickEvent.Phase.END)
-            return;
 
         unclampedFlashAlpha += alphaDir * 0.125f;
         if (unclampedFlashAlpha >= 1.5f)
@@ -298,7 +288,7 @@ public class HUDOverlayHandler {
 
         boolean shouldAnimatedFood;
 
-        IThirst thirstData = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+        IThirst thirstData = player.getData(ModAttachment.PLAYER_THIRST);
 
         // in vanilla saturation level is zero will show hunger animation
         float quenched = thirstData.getQuenched();
@@ -329,10 +319,5 @@ public class HUDOverlayHandler {
             point.x = x - right;
             point.y = y - top;
         }
-    }
-
-    static {
-        modIcons = Thirst.asResource("textures/gui/appleskin_icons.png");
-        THIRST_LEVEL_ELEMENT = Thirst.asResource("thirst_level");
     }
 }

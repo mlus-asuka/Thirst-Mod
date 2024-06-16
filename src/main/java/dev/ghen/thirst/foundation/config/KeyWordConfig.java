@@ -1,30 +1,31 @@
 package dev.ghen.thirst.foundation.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
+
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class KeyWordConfig {
-    private static final ForgeConfigSpec SPEC;
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_KEYWORD_CONFIG;
+    private static final ModConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec.ConfigValue<Boolean> ENABLE_KEYWORD_CONFIG;
 
-    public static final ForgeConfigSpec.ConfigValue<Number> DEFAULT_DRINK_HYDRATION;
-    public static final ForgeConfigSpec.ConfigValue<Number> DEFAULT_DRINK_QUENCHNESS;
-    public static final ForgeConfigSpec.ConfigValue<Number> DEFAULT_SOUP_HYDRATION;
-    public static final ForgeConfigSpec.ConfigValue<Number> DEFAULT_SOUP_QUENCHNESS;
-    public static final ForgeConfigSpec.ConfigValue<Number> DEFAULT_FRUIT_HYDRATION;
-    public static final ForgeConfigSpec.ConfigValue<Number> DEFAULT_FRUIT_QUENCHNESS;
-    public static final ForgeConfigSpec.ConfigValue<String> KEYWORD_BLACKLIST;
-    public static final ForgeConfigSpec.ConfigValue<String> KEYWORD_DRINK;
-    public static final ForgeConfigSpec.ConfigValue<String> KEYWORD_SOUP;
+    public static final ModConfigSpec.ConfigValue<Number> DEFAULT_DRINK_HYDRATION;
+    public static final ModConfigSpec.ConfigValue<Number> DEFAULT_DRINK_QUENCHNESS;
+    public static final ModConfigSpec.ConfigValue<Number> DEFAULT_SOUP_HYDRATION;
+    public static final ModConfigSpec.ConfigValue<Number> DEFAULT_SOUP_QUENCHNESS;
+    public static final ModConfigSpec.ConfigValue<Number> DEFAULT_FRUIT_HYDRATION;
+    public static final ModConfigSpec.ConfigValue<Number> DEFAULT_FRUIT_QUENCHNESS;
+    public static final ModConfigSpec.ConfigValue<String> KEYWORD_BLACKLIST;
+    public static final ModConfigSpec.ConfigValue<String> KEYWORD_DRINK;
+    public static final ModConfigSpec.ConfigValue<String> KEYWORD_SOUP;
 
-    public static final ForgeConfigSpec.ConfigValue<String> KEYWORD_FRUIT;
+    public static final ModConfigSpec.ConfigValue<String> KEYWORD_FRUIT;
 
 
     static {
@@ -75,7 +76,7 @@ public class KeyWordConfig {
         SPEC = BUILDER.build();
     }
 
-    public static void setup()
+    public static void setup(ModContainer modContainer)
     {
         Path configPath = FMLPaths.CONFIGDIR.get();
         Path configFolder = Paths.get(configPath.toAbsolutePath().toString(), "thirst");
@@ -86,7 +87,7 @@ public class KeyWordConfig {
         }
         catch (Exception ignored) {}
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC, "thirst/keyword.toml");
+        modContainer.registerConfig(ModConfig.Type.COMMON, SPEC, "thirst/keyword.toml");
     }
 
     public static int getDrinkHydration()

@@ -1,20 +1,20 @@
 package dev.ghen.thirst.content.thirst;
 
-import de.teamlapen.vampirism.util.Helper;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.damagesource.ModDamageSource;
 import dev.ghen.thirst.foundation.config.CommonConfig;
-import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
 import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.network.PacketDistributor;
-import vectorwing.farmersdelight.common.registry.ModEffects;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.UnknownNullability;
 
-public class PlayerThirst implements IThirst
+public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
 {
     public static boolean checkTombstoneEffects = false;
     public static boolean checkFDEffects = false;
@@ -31,6 +31,8 @@ public class PlayerThirst implements IThirst
     boolean justHealed = false;
     boolean shouldTickThirst = true;
     boolean init = true;
+
+    public PlayerThirst() {}
 
     public int getThirst()
     {
@@ -67,7 +69,7 @@ public class PlayerThirst implements IThirst
     @Override
     public boolean getShouldTickThirst(){return shouldTickThirst;}
 
-    public void drink(Player player, int thirst, int quenched)
+    public void drink(int thirst, int quenched)
     {
         this.thirst = Math.min(this.thirst + thirst, 20);
         this.quenched = Math.min(this.quenched + quenched, this.thirst);
@@ -94,10 +96,11 @@ public class PlayerThirst implements IThirst
         if(checkTombstoneEffects && player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("ghostly_shape")))
             return;
 
-        if(checkVampirismEffects && Helper.isVampire(player))
-            return;
+//        if(checkVampirismEffects && Helper.isVampire(player))
+//            return;
 
-        boolean isNourished = checkFDEffects && player.hasEffect(ModEffects.NOURISHMENT.get());
+        boolean isNourished = false;
+//                checkFDEffects && player.hasEffect(ModEffects.NOURISHMENT.get());
         boolean isStuffed = checkLetsDoBakeryEffects &&
                 player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("stuffed"));
         boolean isSaturated = checkLetsDoBreweryEffects &&
@@ -107,6 +110,7 @@ public class PlayerThirst implements IThirst
         if (!isSitting && !isNourished && !isStuffed && !isSaturated)
         {
             updateExhaustion(player);
+
         }
 
         if (exhaustion > 4)
@@ -155,8 +159,7 @@ public class PlayerThirst implements IThirst
 
     public void updateThirstData(Player player)
     {
-        ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-                new PlayerThirstSyncMessage(thirst, quenched, exhaustion,shouldTickThirst));
+        PacketDistributor.sendToPlayer((ServerPlayer) player, new PlayerThirstSyncMessage(thirst, quenched, exhaustion,shouldTickThirst));
     }
 
     @Override
@@ -171,6 +174,7 @@ public class PlayerThirst implements IThirst
         thirst = cap.getThirst();
         quenched = cap.getQuenched();
         exhaustion = cap.getExhaustion();
+        shouldTickThirst = cap.getShouldTickThirst();
     }
 
     public void addExhaustion(Player player, float amount)
@@ -193,25 +197,23 @@ public class PlayerThirst implements IThirst
         updateThirstData(player);
     }
 
-    public CompoundTag serializeNBT()
-    {
-        CompoundTag nbt = new CompoundTag();
 
+
+    @Override
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        CompoundTag nbt = new CompoundTag();
         nbt.putInt("thirst", thirst);
         nbt.putInt("quenched", quenched);
         nbt.putFloat("exhaustion", exhaustion);
         nbt.putBoolean("enable",shouldTickThirst);
-
         return nbt;
     }
 
-    public void deserializeNBT(CompoundTag nbt)
-    {
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         thirst = nbt.getInt("thirst");
         quenched = nbt.getInt("quenched");
         exhaustion = nbt.getFloat("exhaustion");
         shouldTickThirst = !nbt.contains("enable") || nbt.getBoolean("enable");
     }
-
-
 }

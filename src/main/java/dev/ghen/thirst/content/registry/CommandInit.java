@@ -5,8 +5,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
-import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
-import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
+import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -15,15 +14,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Mod.EventBusSubscriber(modid = Thirst.ID)
+@EventBusSubscriber(modid = Thirst.ID)
 public class CommandInit {
 
     @SubscribeEvent
@@ -34,7 +34,7 @@ public class CommandInit {
                 .then(Commands.literal("query").then(Commands.argument("Player", EntityArgument.player())
                         .executes(context -> {
                                     ServerPlayer player = EntityArgument.getPlayer(context,"Player");
-                                    IThirst iThirst = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+                                    IThirst iThirst = player.getData(ModAttachment.PLAYER_THIRST);
                                     Object[] arg =new Object[2];
                                     arg[0]=iThirst.getThirst();
                                     arg[1]=iThirst.getQuenched();
@@ -47,7 +47,7 @@ public class CommandInit {
                                 .then(Commands.argument("quenched", IntegerArgumentType.integer(0,20))
                                         .executes(context -> {
                                             ServerPlayer player = EntityArgument.getPlayer(context,"Player");
-                                            IThirst iThirst = player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+                                            IThirst iThirst = player.getData(ModAttachment.PLAYER_THIRST);
                                             Object[] arg =new Object[2];
                                             arg[0]= IntegerArgumentType.getInteger(context,"thirst");
                                             arg[1]= IntegerArgumentType.getInteger(context,"quenched");
@@ -65,10 +65,9 @@ public class CommandInit {
                                     boolean shouldTick = BoolArgumentType.getBool(context,"bool");
                                     Collection<Component> playersName = new ArrayList<>();
                                     for(ServerPlayer player:players){
-                                        IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+                                        IThirst thirstData = player.getData(ModAttachment.PLAYER_THIRST);
                                         thirstData.setShouldTickThirst(shouldTick);
-                                        ThirstModPacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player),
-                                                new PlayerThirstSyncMessage(shouldTick));
+                                        PacketDistributor.sendToPlayer(player,new PlayerThirstSyncMessage(thirstData.getThirst(),thirstData.getQuenched(),thirstData.getExhaustion(),shouldTick));
                                         playersName.add(player.getName());
                                     }
 

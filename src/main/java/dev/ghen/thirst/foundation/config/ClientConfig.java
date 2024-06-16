@@ -1,9 +1,10 @@
 package dev.ghen.thirst.foundation.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
+
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,13 +12,13 @@ import java.nio.file.Paths;
 
 public class ClientConfig
 {
-    private static final ForgeConfigSpec SPEC;
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ONLY_SHOW_PURITY_WHEN_SHIFTING;
-    public static final ForgeConfigSpec.ConfigValue<Integer> THIRST_BAR_Y_OFFSET;
-    public static final ForgeConfigSpec.ConfigValue<Integer> THIRST_BAR_X_OFFSET;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DRINK_BOTH_HAND_NEEDED;
+    public static final ModConfigSpec.ConfigValue<Boolean> ONLY_SHOW_PURITY_WHEN_SHIFTING;
+    public static final ModConfigSpec.ConfigValue<Integer> THIRST_BAR_Y_OFFSET;
+    public static final ModConfigSpec.ConfigValue<Integer> THIRST_BAR_X_OFFSET;
+    public static final ModConfigSpec.ConfigValue<Boolean> DRINK_BOTH_HAND_NEEDED;
 
     static
     {
@@ -37,7 +38,7 @@ public class ClientConfig
         SPEC = BUILDER.build();
     }
 
-    public static void setup()
+    public static void setup(ModContainer modContainer)
     {
         Path configPath = FMLPaths.CONFIGDIR.get();
         Path configFolder = Paths.get(configPath.toAbsolutePath().toString(), "thirst");
@@ -48,6 +49,6 @@ public class ClientConfig
         }
         catch (Exception ignored) {}
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SPEC, "thirst/client.toml");
+        modContainer.registerConfig(ModConfig.Type.CLIENT, SPEC, "thirst/client.toml");
     }
 }

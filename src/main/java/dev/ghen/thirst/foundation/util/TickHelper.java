@@ -3,13 +3,13 @@ package dev.ghen.thirst.foundation.util;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.*;
 
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class TickHelper
 {
     /**
@@ -38,12 +38,12 @@ public class TickHelper
     }
 
     @SubscribeEvent
-    static void runTasks(TickEvent.LevelTickEvent event)
+    static void runTasks(LevelTickEvent.Pre event)
     {
-        if(event.level instanceof ServerLevel && tickTimerFsr == 0 && tickTasks.containsKey(event.level.getServer().getTickCount()))
+        if(event.getLevel() instanceof ServerLevel && tickTimerFsr == 0 && tickTasks.containsKey(event.getLevel().getServer().getTickCount()))
         {
-            tickTasks.get(event.level.getServer().getTickCount()).forEach(Runnable::run);
-            tickTasks.remove(event.level.getServer().getTickCount());
+            tickTasks.get(event.getLevel().getServer().getTickCount()).forEach(Runnable::run);
+            tickTasks.remove(event.getLevel().getServer().getTickCount());
 
             tickTimerFsr += 3;
         }

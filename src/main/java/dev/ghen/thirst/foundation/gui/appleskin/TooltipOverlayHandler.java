@@ -3,10 +3,16 @@ package dev.ghen.thirst.foundation.gui.appleskin;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
-import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.api.ThirstHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -15,15 +21,9 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import squeek.appleskin.ModConfig;
-import squeek.appleskin.api.food.FoodValues;
 import squeek.appleskin.helpers.KeyHelper;
+
 
 @OnlyIn(Dist.CLIENT)
 public class TooltipOverlayHandler {
@@ -35,7 +35,7 @@ public class TooltipOverlayHandler {
     }
 
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(new TooltipOverlayHandler());
+        NeoForge.EVENT_BUS.register(new TooltipOverlayHandler());
     }
 
     public static void register(RegisterClientTooltipComponentFactoriesEvent event) {
@@ -94,8 +94,6 @@ public class TooltipOverlayHandler {
     }
 
     static class FoodTooltip implements TooltipComponent {
-        private FoodValues defaultFood;
-        private FoodValues modifiedFood;
         private final int biggestHunger;
         private final float biggestSaturationIncrement;
         private int hungerBars;

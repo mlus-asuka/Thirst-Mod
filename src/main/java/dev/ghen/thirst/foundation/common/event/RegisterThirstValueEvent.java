@@ -4,7 +4,7 @@ import dev.ghen.thirst.content.purity.ContainerWithPurity;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 import static dev.ghen.thirst.api.ThirstHelper.VALID_DRINKS;
 import static dev.ghen.thirst.api.ThirstHelper.VALID_FOODS;
@@ -37,7 +37,7 @@ public class RegisterThirstValueEvent extends Event {
      *Registers new custom water container
      *the container will be taken into consider of purity
      */
-    @SuppressWarnings({"unused", "deprecation"})
+    @SuppressWarnings({"unused"})
     public void addContainer(ContainerWithPurity container){
         WaterPurity.addContainer(container);
     }
@@ -45,12 +45,8 @@ public class RegisterThirstValueEvent extends Event {
     /**
      * A simple version, If you don't need your item to harvest water like bucket.
      */
-    @SuppressWarnings({"unused", "deprecation"})
+    @SuppressWarnings({"unused"})
     public void addContainer(Item item){
         WaterPurity.addContainer(new ContainerWithPurity(new ItemStack(item)));
     }
-
-
-    @Override
-    public boolean isCancelable() {return false;}
 }

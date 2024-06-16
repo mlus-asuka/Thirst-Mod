@@ -1,8 +1,8 @@
 package dev.ghen.thirst.foundation.util;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 
 import java.util.function.Supplier;
 
@@ -19,7 +19,7 @@ public class LoadedValue<T>
     {
         this.valueCreator = valueCreator;
         this.value = valueCreator.get();
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
     }
 
     public static <V> LoadedValue<V> of(Supplier<V> valueCreator)

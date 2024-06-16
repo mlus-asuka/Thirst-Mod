@@ -1,7 +1,6 @@
 package dev.ghen.thirst.foundation.mixin;
 
-import dev.ghen.thirst.foundation.common.capability.IThirst;
-import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
+import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -26,8 +25,7 @@ public class MixinLocalPlayer{
         if(Food < 6.0F){
             return Food;
         }else {
-           Food = Minecraft.getInstance().player.getCapability(ModCapabilities.PLAYER_THIRST)
-                   .lazyMap(IThirst::getThirst).orElse(Food);
+           Food = Minecraft.getInstance().player.getData(ModAttachment.PLAYER_THIRST).getThirst();
         }
         return Food;
     }

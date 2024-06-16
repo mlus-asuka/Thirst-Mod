@@ -1,7 +1,7 @@
 package dev.ghen.thirst.foundation.mixin;
 
 import dev.ghen.thirst.foundation.common.capability.IThirst;
-import dev.ghen.thirst.foundation.common.capability.ModCapabilities;
+import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
@@ -26,10 +26,10 @@ public abstract class MixinFoodData
     )
     private void healWithSaturation(Player player, float amount)
     {
-        if(!player.getCapability(ModCapabilities.PLAYER_THIRST).isPresent())
+        if(player.getData(ModAttachment.PLAYER_THIRST)==null)
             return;
         FoodData foodData = player.getFoodData();
-        IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+        IThirst thirstData =  player.getData(ModAttachment.PLAYER_THIRST);
 
         float f = Math.min(foodData.getSaturationLevel(), 6.0F);
 
@@ -60,9 +60,7 @@ public abstract class MixinFoodData
     )
     private void healWithHunger(Player player, float amount)
     {
-        if(!player.getCapability(ModCapabilities.PLAYER_THIRST).isPresent())
-            return;
-        IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+        IThirst thirstData =  player.getData(ModAttachment.PLAYER_THIRST);
         boolean shouldHeal = !CommonConfig.DEHYDRATION_HALTS_HEALTH_REGEN.get() || thirstData.getThirst() > 18;
 
         if(shouldHeal)

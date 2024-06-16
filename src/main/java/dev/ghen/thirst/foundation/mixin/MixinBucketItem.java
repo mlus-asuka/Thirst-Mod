@@ -3,6 +3,7 @@ package dev.ghen.thirst.foundation.mixin;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.foundation.util.MathHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Objects;
 
 @Mixin(BucketItem.class)
 public class MixinBucketItem
@@ -40,7 +43,7 @@ public class MixinBucketItem
     {
         if(shouldModify)
         {
-            CompoundTag tag = result.getOrCreateTag();
+            CompoundTag tag = Objects.requireNonNull(result.get(DataComponents.CUSTOM_DATA)).getUnsafe();
             tag.putInt("Purity", purity);
         }
 

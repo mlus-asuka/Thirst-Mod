@@ -1,9 +1,10 @@
 package dev.ghen.thirst.foundation.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.loading.FMLPaths;
+
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,12 +15,12 @@ import java.util.List;
 
 public class ItemSettingsConfig
 {
-    private static final ForgeConfigSpec SPEC;
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
-    public static final ForgeConfigSpec.ConfigValue<List<? extends List<?>>> DRINKS;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends List<?>>> FOODS;
-    public static final ForgeConfigSpec.ConfigValue<List<String>> ITEMS_BLACKLIST;
+    public static final ModConfigSpec.ConfigValue<List<? extends List<?>>> DRINKS;
+    public static final ModConfigSpec.ConfigValue<List<? extends List<?>>> FOODS;
+    public static final ModConfigSpec.ConfigValue<List<String>> ITEMS_BLACKLIST;
 
     static
     {
@@ -78,7 +79,7 @@ public class ItemSettingsConfig
                                         Arrays.asList("toughasnails:sweet_berry_juice", 8, 13)
 
                                 ),
-                        it -> it instanceof List && ((List<?>) it).get(0) instanceof String && ((List<?>) it).get(1) instanceof Number);
+                        it -> it instanceof List && ((List<?>) it).getFirst() instanceof String && ((List<?>) it).get(1) instanceof Number);
 
         BUILDER.pop();
 
@@ -118,7 +119,7 @@ public class ItemSettingsConfig
                                         Arrays.asList("collectorsreap:portobello_rice_soup",6,8),
                                         Arrays.asList("collectorsreap:lime_popsicle",7,9)
                                 ),
-                        it -> it instanceof List && ((List<?>) it).get(0) instanceof String && ((List<?>) it).get(1) instanceof Number);
+                        it -> it instanceof List && ((List<?>) it).getFirst() instanceof String && ((List<?>) it).get(1) instanceof Number);
 
         BUILDER.pop();
 
@@ -132,7 +133,7 @@ public class ItemSettingsConfig
         SPEC = BUILDER.build();
     }
 
-    public static void setup()
+    public static void setup(ModContainer modContainer)
     {
         Path configPath = FMLPaths.CONFIGDIR.get();
         Path configFolder = Paths.get(configPath.toAbsolutePath().toString(), "thirst");
@@ -143,6 +144,6 @@ public class ItemSettingsConfig
         }
         catch (Exception ignored) {}
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC, "thirst/item_settings.toml");
+        modContainer.registerConfig(ModConfig.Type.COMMON, SPEC, "thirst/item_settings.toml");
     }
 }
