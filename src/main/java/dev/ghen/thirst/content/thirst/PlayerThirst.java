@@ -10,6 +10,7 @@ import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 import vectorwing.farmersdelight.common.registry.ModEffects;
@@ -99,7 +100,12 @@ public class PlayerThirst implements IThirst
 
         boolean isSitting = player.isPassenger();
 
-        if (!isSitting && !isNourished) {
+        if(CommonConfig.DEPLETES_WHEN_NAUSEA.get() && player.getActiveEffects().stream().anyMatch(e->e.getEffect().equals(MobEffects.CONFUSION))){
+            addExhaustion(player,0.06F);
+        }
+
+        if (!isSitting && !isNourished)
+        {
             updateExhaustion(player);
         }
 
@@ -165,6 +171,7 @@ public class PlayerThirst implements IThirst
         thirst = cap.getThirst();
         quenched = cap.getQuenched();
         exhaustion = cap.getExhaustion();
+        shouldTickThirst = cap.getShouldTickThirst();
     }
 
     public void addExhaustion(Player player, float amount)
