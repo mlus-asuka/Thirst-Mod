@@ -346,7 +346,7 @@ public class WaterPurity
         for (Block fillable : fillablesWithPurity)
         {
             if (fillable == block)
-                return  true;
+                return true;
         }
 
         return false;

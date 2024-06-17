@@ -13,6 +13,7 @@ import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
 import dev.ghen.thirst.foundation.config.KeyWordConfig;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import dev.ghen.thirst.foundation.gui.appleskin.HUDOverlayHandler;
+import dev.ghen.thirst.foundation.gui.appleskin.OverlayRegister;
 import dev.ghen.thirst.foundation.gui.appleskin.TooltipOverlayHandler;
 import dev.ghen.thirst.foundation.tab.ThirstTab;
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +45,7 @@ public class Thirst
                 HUDOverlayHandler.init();
                 TooltipOverlayHandler.init();
                 modBus.addListener(this::onRegisterClientTooltipComponentFactories);
+                modBus.addListener(OverlayRegister::onRenderGuiOverlayPost);
             }
 
         ItemInit.ITEMS.register(modBus);
