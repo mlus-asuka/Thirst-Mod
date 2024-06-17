@@ -116,14 +116,19 @@ public class PlayerThirstManager
     @SubscribeEvent
     public static void endFix(PlayerEvent.Clone event)
     {
-        if (!event.isWasDeath() && !event.getEntity().level().isClientSide)
+        if (!event.getEntity().level().isClientSide)
         {
             Player oldPlayer = event.getOriginal();
             oldPlayer.reviveCaps();
 
-            event.getEntity().getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(cap ->
-                    oldPlayer.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(cap::copy));
-
+            if(!event.isWasDeath()) {
+                event.getEntity().getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(cap ->
+                        oldPlayer.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(cap::copy));
+            }
+            else {
+                event.getEntity().getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(cap ->
+                        oldPlayer.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(oldCap->cap.setShouldTickThirst(oldCap.getShouldTickThirst())));
+            }
             oldPlayer.invalidateCaps();
         }
     }
