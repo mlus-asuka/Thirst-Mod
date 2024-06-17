@@ -14,8 +14,6 @@ public class ThirstModPacketHandler
 {
     private static final String PROTOCOL_VERSION = "0.1.3";
 
-//    public static final NetworkChannel INSTANCE = new NetworkChannel(Thirst.asResource("main"), PROTOCOL_VERSION);
-
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);

@@ -26,8 +26,6 @@ public abstract class MixinFoodData
     )
     private void healWithSaturation(Player player, float amount)
     {
-        if(player.getData(ModAttachment.PLAYER_THIRST)==null)
-            return;
         FoodData foodData = player.getFoodData();
         IThirst thirstData =  player.getData(ModAttachment.PLAYER_THIRST);
 

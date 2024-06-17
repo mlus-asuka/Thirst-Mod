@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "# #",
     " # "
@@ -10,7 +11,7 @@
     }
   },
   "result": {
-    "item": "thirst:clay_bowl",
+    "id": "thirst:clay_bowl",
     "count": 4
   }
 }

@@ -9,6 +9,9 @@ import dev.ghen.thirst.foundation.util.MathHelper;
 import dev.ghen.thirst.foundation.util.TickHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.PlainTextContents;
@@ -30,6 +33,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -41,7 +46,9 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 import toughasnails.api.item.TANItems;
+import toughasnails.item.EmptyCanteenItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +56,7 @@ import java.util.Objects;
 import java.util.Random;
 
 
-@SuppressWarnings("SpellCheckingInspection")
+@SuppressWarnings({"SpellCheckingInspection","unused"})
 @EventBusSubscriber
 public class WaterPurity
 {
@@ -74,7 +81,7 @@ public class WaterPurity
 
     public static void init()
     {
-//        registerDispenserBehaviours();
+        registerDispenserBehaviours();
         registerContainers();
         registerFillables();
 
@@ -103,13 +110,13 @@ public class WaterPurity
 
     private static void registerContainers()
     {
-        waterContainers.add(new ContainerWithPurity(new ItemStack(Items.GLASS_BOTTLE),
-                PotionContents.createItemStack(Items.POTION,Potions.WATER)).setEqualsFilled(itemStack ->
+        waterContainers.add(new ContainerWithPurity(Items.GLASS_BOTTLE,
+                PotionContents.createItemStack(Items.POTION,Potions.WATER).getItem()).setEqualsFilled(itemStack ->
                 itemStack.is(Items.POTION) && itemStack.get(DataComponents.POTION_CONTENTS).is(Potions.WATER)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(ItemInit.TERRACOTTA_BOWL.get()),
-                new ItemStack(ItemInit.TERRACOTTA_WATER_BOWL.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(Items.BUCKET),
-                new ItemStack(Items.WATER_BUCKET), false).canHarvestRunningWater(false));
+        waterContainers.add(new ContainerWithPurity(ItemInit.TERRACOTTA_BOWL.get(),
+                ItemInit.TERRACOTTA_WATER_BOWL.get()));
+        waterContainers.add(new ContainerWithPurity(Items.BUCKET,
+                Items.WATER_BUCKET, false).canHarvestRunningWater(false));
     }
 
     private static void registerFillables()
@@ -119,52 +126,69 @@ public class WaterPurity
     }
 
     private static void registerCollectorsReapContainers(){
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(CRItems.POMEGRANATE_BLACK_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(CRItems.LIME_GREEN_TEA.get())));
+//        waterContainers.add(new ContainerWithPurity(CRItems.POMEGRANATE_BLACK_TEA));
+//        waterContainers.add(new ContainerWithPurity(CRItems.LIME_GREEN_TEA));
     }
 
     private static void registerFarmersRespiteContainers()
     {
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.GREEN_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.YELLOW_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.BLACK_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.ROSE_HIP_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.DANDELION_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.COFFEE.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.GAMBLERS_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.PURULENT_TEA.get())));
+//        waterContainers.add(new ContainerWithPurity(FRItems.GREEN_TEA));
+//        waterContainers.add(new ContainerWithPurity(FRItems.YELLOW_TEA));
+//        waterContainers.add(new ContainerWithPurity(FRItems.BLACK_TEA));
+//        waterContainers.add(new ContainerWithPurity(FRItems.ROSE_HIP_TEA));
+//        waterContainers.add(new ContainerWithPurity(FRItems.DANDELION_TEA));
+//        waterContainers.add(new ContainerWithPurity(FRItems.COFFEE));
+//        waterContainers.add(new ContainerWithPurity(FRItems.GAMBLERS_TEA));
+//        waterContainers.add(new ContainerWithPurity(FRItems.PURULENT_TEA));
     }
 
 //    private static void registerBrewinAndChewinContainers()
 //    {
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.BEER.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.VODKA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.RICE_WINE.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.STRONGROOT_ALE.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.PALE_JANE.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.SALTY_FOLLY.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.STEEL_TOE_STOUT.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.GLITTERING_GRENADINE.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.BLOODY_MARY.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.RED_RUM.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.WITHERING_DROSS.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(BCItems.KOMBUCHA.get())));
+//        waterContainers.add(new ContainerWithPurity(BCItems.BEER.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.VODKA.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.RICE_WINE.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.STRONGROOT_ALE.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.PALE_JANE.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.SALTY_FOLLY.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.STEEL_TOE_STOUT.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.GLITTERING_GRENADINE.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.BLOODY_MARY.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.RED_RUM.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.WITHERING_DROSS.get()));
+//        waterContainers.add(new ContainerWithPurity(BCItems.KOMBUCHA.get()));
 //    }
 
     private static void registerToughAsNailsContainers()
     {
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PURIFIED_WATER_CANTEEN.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIRTY_WATER_CANTEEN.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.WATER_CANTEEN.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PURIFIED_WATER_BOTTLE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIRTY_WATER_BOTTLE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.APPLE_JUICE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.CACTUS_JUICE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.CHORUS_FRUIT_JUICE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.GLOW_BERRY_JUICE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.MELON_JUICE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PUMPKIN_JUICE)));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.SWEET_BERRY_JUICE)));
+        waterContainers.add(new ContainerWithPurity(TANItems.LEATHER_DIRTY_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.COPPER_DIRTY_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.IRON_DIRTY_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.GOLD_DIRTY_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.DIAMOND_DIRTY_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.NETHERITE_DIRTY_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.LEATHER_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.COPPER_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.IRON_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.GOLD_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.DIAMOND_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.NETHERITE_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.LEATHER_PURIFIED_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.COPPER_PURIFIED_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.IRON_PURIFIED_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.GOLD_PURIFIED_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.DIAMOND_PURIFIED_WATER_CANTEEN));
+        waterContainers.add(new ContainerWithPurity(TANItems.NETHERITE_PURIFIED_WATER_CANTEEN));
+
+
+        waterContainers.add(new ContainerWithPurity(TANItems.PURIFIED_WATER_BOTTLE));
+        waterContainers.add(new ContainerWithPurity(TANItems.DIRTY_WATER_BOTTLE));
+        waterContainers.add(new ContainerWithPurity(TANItems.APPLE_JUICE));
+        waterContainers.add(new ContainerWithPurity(TANItems.CACTUS_JUICE));
+        waterContainers.add(new ContainerWithPurity(TANItems.CHORUS_FRUIT_JUICE));
+        waterContainers.add(new ContainerWithPurity(TANItems.GLOW_BERRY_JUICE));
+        waterContainers.add(new ContainerWithPurity(TANItems.MELON_JUICE));
+        waterContainers.add(new ContainerWithPurity(TANItems.PUMPKIN_JUICE));
+        waterContainers.add(new ContainerWithPurity(TANItems.SWEET_BERRY_JUICE));
     }
 
     @SubscribeEvent
@@ -209,7 +233,6 @@ public class WaterPurity
      * Don't use it directly. Trying to subscribe #{@link RegisterThirstValueEvent}
      */
     @Deprecated
-    @SuppressWarnings("unused")
     public static void addContainer(ContainerWithPurity container)
     {
         waterContainers.add(container);
@@ -220,12 +243,11 @@ public class WaterPurity
      * The second parameter specifies if the container inputted is the empty or
      * filled version
      */
-    @SuppressWarnings("unused")
     public static ItemStack getFilledContainer(ItemStack container, boolean fromFilled)
     {
         for (ContainerWithPurity waterContainer : waterContainers)
             if ((!fromFilled && waterContainer.equalsEmpty(container)) || (fromFilled && waterContainer.equalsFilled(container)))
-                return waterContainer.getFilledItem().copy();
+                return waterContainer.getFilledItem().getDefaultInstance();
 
         return ItemStack.EMPTY.copy();
     }
@@ -237,8 +259,6 @@ public class WaterPurity
     @SubscribeEvent
     static void harvestRunningWater(PlayerInteractEvent.RightClickItem event)
     {
-        if (event.getEntity() == null)
-            return;
         ItemStack item = event.getItemStack();
 
         if (!canHarvestRunningWater(item))
@@ -349,7 +369,7 @@ public class WaterPurity
     /**
      * Reads the purity from an item
      */
-    public static int getPurity(ItemStack item)
+    public static Integer getPurity(ItemStack item)
     {
         Integer purity = item.get(ThirstComponent.PURITY);
         if(purity==null)
@@ -372,21 +392,24 @@ public class WaterPurity
 
     public static void tanPurity(ItemStack item)
     {
-
-//        tag.putInt("Purity", 3);
+        item.set(ThirstComponent.PURITY,3);
 
         if(item.is(TANItems.DIRTY_WATER_BOTTLE))
-
             item.set(ThirstComponent.PURITY,0);
 
-//        if(item.is(TANItems.WATER_CANTEEN.get()))
-//            tag.putInt("Purity", 2);
+        if(item.getItem() instanceof EmptyCanteenItem canteenItem){
+            if(item.getItem().equals(canteenItem.getDirtyWaterCanteen())){
+                item.set(ThirstComponent.PURITY,0);
+            }else if(item.getItem().equals(canteenItem.getWaterCanteen())){
+                item.set(ThirstComponent.PURITY,2);
+            }
+        }
     }
 
     /**
      * Reads the purity from a fluid
      */
-    public static int getPurity(FluidStack fluid)
+    public static Integer getPurity(FluidStack fluid)
     {
         if(fluid.get(ThirstComponent.PURITY) == null){
             fluid.set(ThirstComponent.PURITY,CommonConfig.DEFAULT_PURITY.get());
@@ -400,7 +423,6 @@ public class WaterPurity
      */
     public static String getPurityText(int purity)
     {
-        if(purity==-1) return null;
         String purityText = purity == 0 ? "dirty" :
                 purity == 1 ? "slightly_dirty" :
                         purity == 2 ? "acceptable" : "purified";
@@ -595,64 +617,61 @@ public class WaterPurity
         return shouldRegenerate || CommonConfig.QUENCH_THIRST_WHEN_DEBUFFED.get();
     }
 
-    //todo: Dispenser compat and Cauldron compat
 
-//    static void registerDispenserBehaviours()
-//    {
-//        DispenseItemBehavior bucketDefaultBehaviour = DISPENSER_REGISTRY.get(Items.BUCKET);
-//        DispenseItemBehavior bottleDefaultBehaviour = DISPENSER_REGISTRY.get(Items.GLASS_BOTTLE);
-//
-//        //mappings (the default is execute)
-//        Method execute = ObfuscationReflectionHelper.findMethod(DefaultDispenseItemBehavior.class, "m_7498_", BlockSource.class, ItemStack.class);
-//
-//        DispenserBlock.registerBehavior(Items.BUCKET, (block, item) ->
-//        {
-//            Level level = block.level();
-//            BlockPos blockpos = block.pos().relative(block.state().getValue(DispenserBlock.FACING));
-//            if(level.getFluidState(blockpos).is(FluidTags.WATER) && level.getBlockState(blockpos).getFluidState().isSource())
-//            {
-//                ItemStack result = new ItemStack(Items.WATER_BUCKET);
-//                return getStack(block, item, level, blockpos, result,true);
-//            }
-//            else
-//                return (ItemStack) ReflectionUtil.fuckYouReflections(execute, bucketDefaultBehaviour, block, item);
-//
-//        });
-//
-//        DispenserBlock.registerBehavior(Items.GLASS_BOTTLE, (block, item) ->
-//        {
-//            Level level = block.level();
-//            BlockPos blockpos = block.pos().relative(block.state().getValue(DispenserBlock.FACING));
-//
-//            if(level.getFluidState(blockpos).is(FluidTags.WATER))
-//            {
-//                ItemStack result = PotionContents.createItemStack(Items.POTION,Potions.WATER);
-//                return getStack(block, item, level, blockpos, result,false);
-//            }
-//            else
-//                return (ItemStack) ReflectionUtil.fuckYouReflections(execute, bottleDefaultBehaviour, block, item);
-//        });
-//    }
-//
-//    @NotNull
-//    private static ItemStack getStack(BlockSource block, ItemStack item, Level level, BlockPos blockpos, ItemStack result,boolean pickupBlock) {
-//        level.gameEvent(null, GameEvent.FLUID_PICKUP, blockpos);
-//        addPurity(result, blockpos, level);
-//
-//        if(pickupBlock)
-//            ((BucketPickup)level.getBlockState(blockpos).getBlock()).pickupBlock(null,level, blockpos, level.getBlockState(blockpos));
-//
-//        item.shrink(1);
-//        if (item.isEmpty()) {
-//            return result;
-//        } else
-//        {
-//            if (block.blockEntity().insertItem(result)!=result)
-//            {
-//                new DefaultDispenseItemBehavior().dispense(block, result);
-//            }
-//
-//            return item;
-//        }
-//    }
+    static void registerDispenserBehaviours()
+    {
+        DispenseItemBehavior bucketDefaultBehaviour = DispenserBlock.DISPENSER_REGISTRY.get(Items.BUCKET);
+        DispenseItemBehavior bottleDefaultBehaviour = DispenserBlock.DISPENSER_REGISTRY.get(Items.GLASS_BOTTLE);
+
+        DispenserBlock.registerBehavior(Items.BUCKET, (block, item) ->
+        {
+            Level level = block.level();
+            BlockPos blockpos = block.pos().relative(block.state().getValue(DispenserBlock.FACING));
+            if(level.getFluidState(blockpos).is(FluidTags.WATER) && level.getBlockState(blockpos).getFluidState().isSource())
+            {
+                ItemStack result = new ItemStack(Items.WATER_BUCKET);
+                return getStack(block, item, level, blockpos, result,true);
+            }
+            else
+                return bucketDefaultBehaviour.dispense(block,item);
+
+        });
+
+        DispenserBlock.registerBehavior(Items.GLASS_BOTTLE, (block, item) ->
+        {
+            Level level = block.level();
+            BlockPos blockpos = block.pos().relative(block.state().getValue(DispenserBlock.FACING));
+
+            if(level.getFluidState(blockpos).is(FluidTags.WATER))
+            {
+                ItemStack result = PotionContents.createItemStack(Items.POTION,Potions.WATER);
+                return getStack(block, item, level, blockpos, result,false);
+            }
+            else
+                return bottleDefaultBehaviour.dispense(block,item);
+
+        });
+    }
+
+    @NotNull
+    private static ItemStack getStack(BlockSource block, ItemStack item, Level level, BlockPos blockpos, ItemStack result, boolean pickupBlock) {
+        level.gameEvent(null, GameEvent.FLUID_PICKUP, blockpos);
+        addPurity(result, blockpos, level);
+
+        if(pickupBlock)
+            ((BucketPickup)level.getBlockState(blockpos).getBlock()).pickupBlock(null,level, blockpos, level.getBlockState(blockpos));
+
+        item.shrink(1);
+        if (item.isEmpty()) {
+            return result;
+        } else
+        {
+            if (block.blockEntity().insertItem(result)!=result)
+            {
+                new DefaultDispenseItemBehavior().dispense(block, result);
+            }
+
+            return item;
+        }
+    }
 }

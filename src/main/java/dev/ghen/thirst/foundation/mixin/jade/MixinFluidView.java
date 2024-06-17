@@ -20,7 +20,7 @@ public class MixinFluidView {
         FluidStack instance = CommonProxy.toFluidStack(fluid);
         if(instance.isEmpty()) return instance.getHoverName();
 
-        if(WaterPurity.hasPurity(instance) && WaterPurity.getPurity(instance)!=-1){
+        if(WaterPurity.hasPurity(instance)){
             return Component.literal(Objects.requireNonNull(
                     WaterPurity.getPurityText(WaterPurity.getPurity(instance))))
                     .append(" ")

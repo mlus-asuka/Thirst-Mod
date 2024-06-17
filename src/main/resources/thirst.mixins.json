@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "thirst.refmap.json",
   "mixins": [
+    "MixinBootstrap",
     "MixinBottleItem",
     "MixinBucketItem",
     "MixinCampfireBlockEntity",
@@ -12,8 +13,11 @@
     "MixinLayeredCauldronBlock",
     "MixinPotionItem",
     "jade.MixinFluidView",
+    "toughasnails.MixinEmptyCanteenItem",
     "toughasnails.MixinServerConfig",
-    "toughasnails.MixinThirstHelperImpl"
+    "toughasnails.MixinThirstHandler",
+    "toughasnails.MixinThirstHelperImpl",
+    "toughasnails.MixinTooltipHandler"
   ],
   "client": [
     "MixinGui",

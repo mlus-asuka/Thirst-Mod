@@ -9,10 +9,13 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.UnknownNullability;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
 {
@@ -99,15 +102,33 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
 //        if(checkVampirismEffects && Helper.isVampire(player))
 //            return;
 
-        boolean isNourished = false;
-//                checkFDEffects && player.hasEffect(ModEffects.NOURISHMENT.get());
-        boolean isStuffed = checkLetsDoBakeryEffects &&
-                player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("stuffed"));
-        boolean isSaturated = checkLetsDoBreweryEffects &&
-                player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("saturated"));
+        AtomicBoolean isNourished = new AtomicBoolean(false);
+        AtomicBoolean isStuffed = new AtomicBoolean(false);
+        AtomicBoolean isSaturated = new AtomicBoolean(false);
+
+        player.getActiveEffects().stream().anyMatch(mobEffectInstance -> {
+
+            if(checkFDEffects && mobEffectInstance.getDescriptionId().contains("nourishment")){
+                isNourished.set(true);
+            }
+            if(checkLetsDoBakeryEffects && mobEffectInstance.getDescriptionId().contains("stuffed")){
+                isStuffed.set(true);
+            }
+            if(checkLetsDoBreweryEffects && mobEffectInstance.getDescriptionId().contains("saturated")){
+                isSaturated.set(true);
+            }
+            if(CommonConfig.DEPLETES_WHEN_NAUSED.get() && mobEffectInstance.is(MobEffects.CONFUSION)){
+                addExhaustion(player,0.06F);
+            }
+
+            return true;
+        });
+
+
+
         boolean isSitting = player.isPassenger();
 
-        if (!isSitting && !isNourished && !isStuffed && !isSaturated)
+        if (!isSitting && !isNourished.get() && !isStuffed.get() && !isSaturated.get())
         {
             updateExhaustion(player);
 

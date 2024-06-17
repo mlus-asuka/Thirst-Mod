@@ -6,6 +6,7 @@ import dev.ghen.thirst.content.registry.ItemInit;
 import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.content.thirst.PlayerThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
+import dev.ghen.thirst.foundation.common.loot.ModLootModifiers;
 import dev.ghen.thirst.foundation.config.ClientConfig;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
@@ -34,12 +35,9 @@ public class Thirst
 
         modBus.addListener(this::commonSetup);
         modBus.addListener(this::clientSetup);
-//        modBus.addListener(this::registerCapabilities);
         ModAttachment.ATTACHMENT_TYPES.register(modBus);
         ThirstComponent.DR.register(modBus);
-
-//        if(FMLEnvironment.dist.isClient()){
-//            modBus.addListener(ThirstBarRenderer::registerThirstOverlay);
+        ModLootModifiers.LOOT_MODIFIERS.register(modBus);
 
             if(ModList.get().isLoaded("appleskin"))
             {
@@ -98,11 +96,6 @@ public class Thirst
             ThirstBarRenderer.checkIfPlayerIsVampire = true;
         }
     }
-
-//    public void registerCapabilities(RegisterCapabilitiesEvent event)
-//    {
-//        event.registerEntity(ModAttachment.PLAYER_THIRST, EntityType.PLAYER, (player, context) -> new PlayerThirst(player));
-//    }
 
     public static ResourceLocation asResource(String path)
     {

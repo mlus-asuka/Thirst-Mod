@@ -3,7 +3,6 @@ package dev.ghen.thirst.foundation.common.event;
 import dev.ghen.thirst.content.purity.ContainerWithPurity;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.Event;
 
 import static dev.ghen.thirst.api.ThirstHelper.VALID_DRINKS;
@@ -47,6 +46,6 @@ public class RegisterThirstValueEvent extends Event {
      */
     @SuppressWarnings({"unused"})
     public void addContainer(Item item){
-        WaterPurity.addContainer(new ContainerWithPurity(new ItemStack(item)));
+        WaterPurity.addContainer(new ContainerWithPurity(item));
     }
 }

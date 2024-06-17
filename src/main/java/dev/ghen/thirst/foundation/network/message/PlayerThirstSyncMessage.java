@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.NotNull;
 
 public record PlayerThirstSyncMessage(int thirst,int quenched,float exhaustion,boolean enable) implements CustomPacketPayload
 {
@@ -51,7 +52,7 @@ public record PlayerThirstSyncMessage(int thirst,int quenched,float exhaustion,b
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public @NotNull Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 }

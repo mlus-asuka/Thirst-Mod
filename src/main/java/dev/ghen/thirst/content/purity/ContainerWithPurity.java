@@ -1,20 +1,22 @@
 package dev.ghen.thirst.content.purity;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Predicate;
 
+@SuppressWarnings("unused")
 public class ContainerWithPurity
 {
-    private ItemStack filledItem;
-    private ItemStack emptyItem;
+    private Item filledItem;
+    private Item emptyItem;
     private final boolean isDrinkable;
     private final boolean isStatic;
     private Predicate<ItemStack> equalsFilled;
     private Predicate<ItemStack> equalsEmpty;
     private boolean canHarvestRunningWater;
 
-    public ContainerWithPurity(ItemStack emptyItem, ItemStack filledItem)
+    public ContainerWithPurity(Item emptyItem, Item filledItem)
     {
         this.emptyItem = emptyItem;
         this.filledItem = filledItem;
@@ -25,7 +27,7 @@ public class ContainerWithPurity
         fillPredicates();
     }
 
-    public ContainerWithPurity(ItemStack emptyItem, ItemStack filledItem, boolean isDrinkable)
+    public ContainerWithPurity(Item emptyItem, Item filledItem, boolean isDrinkable)
     {
         this.emptyItem = emptyItem;
         this.filledItem = filledItem;
@@ -40,7 +42,7 @@ public class ContainerWithPurity
      * Creates a Static container (has purity but can only be
      * drunk, not used to fill anything)
      */
-    public ContainerWithPurity(ItemStack filledItem)
+    public ContainerWithPurity(Item filledItem)
     {
         this.emptyItem = null;
         this.filledItem = filledItem;
@@ -64,8 +66,8 @@ public class ContainerWithPurity
 
     void fillPredicates()
     {
-        equalsFilled = itemStack -> itemStack.getItem() == filledItem.getItem();
-        equalsEmpty = itemStack -> itemStack.getItem() == emptyItem.getItem();
+        equalsFilled = itemStack -> itemStack.getItem() == filledItem;
+        equalsEmpty = itemStack -> itemStack.getItem() == emptyItem;
     }
 
     public ContainerWithPurity setEqualsEmpty(Predicate<ItemStack> predicate)
@@ -95,22 +97,22 @@ public class ContainerWithPurity
         return isDrinkable;
     }
 
-    public ItemStack getFilledItem()
+    public Item getFilledItem()
     {
         return filledItem;
     }
 
-    public void setFilledItem(ItemStack filledItem)
+    public void setFilledItem(Item filledItem)
     {
         this.filledItem = filledItem;
     }
 
-    public ItemStack getEmptyItem()
+    public Item getEmptyItem()
     {
         return emptyItem;
     }
 
-    public void setEmptyItem(ItemStack emptyItem)
+    public void setEmptyItem(Item emptyItem)
     {
         this.emptyItem = emptyItem;
     }

@@ -4,7 +4,10 @@
   {
     "item": "thirst:clay_bowl"
   },
-  "result": "thirst:terracotta_bowl",
+  "result": {
+    "id": "thirst:terracotta_bowl",
+    "count": 1
+  },
   "experience": 0.35,
   "cookingtime": 200
 }

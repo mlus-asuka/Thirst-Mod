@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient":[
+    {
+      "type": "neoforge:components",
+      "items": "minecraft:potion",
+      "components": {
+        "thirst:purity": 1,
+        "potion_contents": {
+          "potion": "minecraft:water"
+        }
+      }
+    }
+  ],
+  "result": {
+    "id":"minecraft:potion",
+    "count": 1,
+    "components": {
+      "thirst:purity": 2,
+      "potion_contents": {
+        "potion": "minecraft:water"
+      }
+    }
+  },
+  "experience": 0.35,
+  "cookingtime": 300
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient":[
+    {
+      "type": "neoforge:components",
+      "items": "thirst:terracotta_water_bowl",
+      "components": {
+        "thirst:purity": 1
+      }
+    }
+  ],
+  "result": {
+    "id": "thirst:terracotta_water_bowl",
+    "count": 1,
+    "components": {
+      "thirst:purity": 2
+    }
+  },
+  "experience": 0.35,
+  "cookingtime": 300
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient":[
+    {
+      "type": "neoforge:components",
+      "items": "minecraft:water_bucket",
+      "components": {
+        "thirst:purity": 0
+      }
+    }
+  ],
+  "result": {
+    "id": "minecraft:water_bucket",
+    "count": 1,
+    "components": {
+      "thirst:purity": 2
+    }
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

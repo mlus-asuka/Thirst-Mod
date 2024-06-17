@@ -105,7 +105,7 @@ dependencies {
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
 
-//    implementation "curse.maven:glitchcore-955399:5429863"
+    compileOnly "curse.maven:glitchcore-955399:5429863"
     compileOnly "curse.maven:tough-as-nails-246391:5429908"
     implementation "curse.maven:jade-324717:5427817"
     implementation "curse.maven:appleskin-248787:5429756"
