@@ -12,10 +12,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber
+@EventBusSubscriber(value = Dist.CLIENT)
 public class ThirstBarRenderer
 {
     public static IThirst PLAYER_THIRST = null;
@@ -31,7 +32,6 @@ public class ThirstBarRenderer
         if (event.getType() != RenderGuiEvent.Type.AIR)
             return;
 
-        Minecraft minecraft = Minecraft.getInstance();
         Entity vehicle = minecraft.player.getVehicle();
         boolean isMounted = vehicle != null && vehicle.showVehicleHealth();
         cancelRender =false;

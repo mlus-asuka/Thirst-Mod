@@ -4,7 +4,6 @@ import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -35,19 +34,15 @@ public record PlayerThirstSyncMessage(int thirst,int quenched,float exhaustion,b
 
     }
 
-    public static void clientHandle(final PlayerThirstSyncMessage message,final IPayloadContext context )
+    public static void clientHandle(final PlayerThirstSyncMessage message,final IPayloadContext context)
     {
         context.enqueueWork(() -> {
-            Player player = Minecraft.getInstance().player;
-
-            if (player != null)
-            {
-                IThirst cap = player.getData(ModAttachment.PLAYER_THIRST);
-                cap.setThirst(message.thirst);
-                cap.setQuenched(message.quenched);
-                cap.setExhaustion(message.exhaustion);
-                cap.setShouldTickThirst(message.enable);
-            }
+            Player player = context.player();
+            IThirst cap = player.getData(ModAttachment.PLAYER_THIRST);
+            cap.setThirst(message.thirst);
+            cap.setQuenched(message.quenched);
+            cap.setExhaustion(message.exhaustion);
+            cap.setShouldTickThirst(message.enable);
         });
     }
 

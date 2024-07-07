@@ -23,6 +23,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 
 
@@ -40,6 +41,7 @@ public class Thirst
         ThirstComponent.DR.register(modBus);
         ModLootModifiers.LOOT_MODIFIERS.register(modBus);
 
+        if(FMLEnvironment.dist.isClient()){
             if(ModList.get().isLoaded("appleskin"))
             {
                 HUDOverlayHandler.init();
@@ -47,6 +49,8 @@ public class Thirst
                 modBus.addListener(this::onRegisterClientTooltipComponentFactories);
                 modBus.addListener(OverlayRegister::onRenderGuiOverlayPost);
             }
+        }
+
 
         ItemInit.ITEMS.register(modBus);
 

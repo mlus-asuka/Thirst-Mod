@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -150,6 +151,9 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
         ++syncTimer;
         if(syncTimer > 10 && !player.level().isClientSide())
         {
+            if(difficulty == Difficulty.PEACEFUL){
+                thirst++;
+            }
             updateThirstData(player);
             syncTimer = 0;
         }
@@ -221,7 +225,7 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
 
 
     @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("thirst", thirst);
         nbt.putInt("quenched", quenched);
@@ -231,7 +235,7 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag nbt) {
         thirst = nbt.getInt("thirst");
         quenched = nbt.getInt("quenched");
         exhaustion = nbt.getFloat("exhaustion");

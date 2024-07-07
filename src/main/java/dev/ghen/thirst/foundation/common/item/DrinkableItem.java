@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class DrinkableItem extends Item
 {
-    private int drinkDuration = 32;
     private Item container;
 
     public DrinkableItem()
@@ -34,12 +33,6 @@ public class DrinkableItem extends Item
     public DrinkableItem setContainer(Item item)
     {
         this.container = item;
-        return this;
-    }
-
-    public DrinkableItem setDrinkDuration(int duration)
-    {
-        this.drinkDuration = duration;
         return this;
     }
 
@@ -79,8 +72,9 @@ public class DrinkableItem extends Item
         return item;
     }
 
-    public int getUseDuration(@NotNull ItemStack p_43001_) {
-        return drinkDuration;
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity user) {
+        return 32;
     }
 
     public @NotNull UseAnim getUseAnimation(@NotNull ItemStack p_42997_) {
