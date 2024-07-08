@@ -31,6 +31,7 @@ public class PlayerThirst implements IThirst
     float prevTickExhaustion = 0.0F;
     boolean justHealed = false;
     boolean shouldTickThirst = true;
+    boolean exhaustionRecalculate = false;
     boolean init = true;
 
     public int getThirst()
@@ -130,6 +131,9 @@ public class PlayerThirst implements IThirst
         ++syncTimer;
         if(syncTimer > 10 && !player.level().isClientSide())
         {
+            if(difficulty == Difficulty.PEACEFUL){
+                thirst = Math.max(thirst + 1,20);
+            }
             updateThirstData(player);
             syncTimer = 0;
         }
@@ -152,7 +156,10 @@ public class PlayerThirst implements IThirst
     void updateExhaustion(Player player)
     {
         float hungerExhaustion = player.getFoodData().getExhaustionLevel();
-        float normalizedHungerExhaustion = hungerExhaustion < this.prevTickExhaustion ? hungerExhaustion + 4.0F : hungerExhaustion;
+        float normalizedHungerExhaustion = hungerExhaustion < this.prevTickExhaustion ? (exhaustionRecalculate ? hungerExhaustion + 4.0F : hungerExhaustion) : hungerExhaustion;
+        if(exhaustionRecalculate){
+            exhaustionRecalculate = false;
+        }
         float deltaExhaustion = normalizedHungerExhaustion - this.prevTickExhaustion;
         this.addExhaustion(player, deltaExhaustion);
         this.prevTickExhaustion = hungerExhaustion;
@@ -169,6 +176,9 @@ public class PlayerThirst implements IThirst
     {
         justHealed = true;
     }
+
+    @Override
+    public void ExhaustionRecalculate(){exhaustionRecalculate = true;}
 
     @Override
     public void copy(IThirst cap)

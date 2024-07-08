@@ -9,7 +9,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FoodData.class)
 public abstract class MixinFoodData
@@ -73,4 +75,18 @@ public abstract class MixinFoodData
         else
             this.addExhaustion(-6.0F);
     }
+
+    @Inject(method = "tick",at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F"))
+    private void DealWithExhaustionBySaturation(Player player, CallbackInfo ci){
+        if(!player.getCapability(ModCapabilities.PLAYER_THIRST).isPresent())
+            return;
+        IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
+        thirstData.ExhaustionRecalculate();
+    }
+
+    @Inject(method = "tick",at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(II)I"))
+    private void DealWithExhaustionByHunger(Player player, CallbackInfo ci){
+        DealWithExhaustionBySaturation(player, ci);
+    }
+
 }
