@@ -8,6 +8,8 @@
     "MixinBottleItem",
     "MixinBucketItem",
     "MixinCampfireBlockEntity",
+    "MixinFluidBucketWrapper",
+    "MixinFluidUtil",
     "MixinFoodData",
     "MixinItemStack",
     "MixinLayeredCauldronBlock",
