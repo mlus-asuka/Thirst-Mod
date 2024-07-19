@@ -17,6 +17,7 @@ public class CommonConfig
 
 
     public static final ModConfigSpec.ConfigValue<Number> THIRST_DEPLETION_MODIFIER;
+    public static final ModConfigSpec.ConfigValue<Boolean> THIRST_DEPLETION_IN_PEACEFUL;
     public static final ModConfigSpec.DoubleValue NETHER_THIRST_DEPLETION_MODIFIER;
     public static final ModConfigSpec.IntValue FIRE_RESISTANCE_DEHYDRATION;
     public static final ModConfigSpec.ConfigValue<Boolean> DEPLETES_WHEN_NAUSED;
@@ -56,6 +57,7 @@ public class CommonConfig
     {
         BUILDER.push("General");
         THIRST_DEPLETION_MODIFIER = BUILDER.comment("How much faster is hydration depletion relative to hunger (1 means they will deplete at the same speed)").define("thirstDepletionModifier", 1.2);
+        THIRST_DEPLETION_IN_PEACEFUL = BUILDER.comment("Whether hydration depletion in peaceful mode").define("thirstDepletionInPeace",false);
         NETHER_THIRST_DEPLETION_MODIFIER = BUILDER.comment("How much is hydration depletion in nether faster than overworld").defineInRange("netherThirstDeletionModifier",3.0D,1.0D,5.0D);
         FIRE_RESISTANCE_DEHYDRATION = BUILDER.comment("How much faster is hydration depletion when players with fire resistance(Range 0 to 100, 0 means not to depletion,100 means depletion like normal)").defineInRange("fireResistanceDehydration",0,0,100);
         DEPLETES_WHEN_NAUSED = BUILDER.comment("Thirst depletes when player is nausea").define("depletesWhenNausea",true);

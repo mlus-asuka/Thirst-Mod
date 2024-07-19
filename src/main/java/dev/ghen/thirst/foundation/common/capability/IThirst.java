@@ -15,6 +15,7 @@ public interface IThirst
     void drink(int thirst, int quenched);
     void updateThirstData(Player player);
     void setJustHealed();
+    void ExhaustionRecalculate();
     void setShouldTickThirst(boolean value);
     boolean getShouldTickThirst();
     void copy(IThirst cap);

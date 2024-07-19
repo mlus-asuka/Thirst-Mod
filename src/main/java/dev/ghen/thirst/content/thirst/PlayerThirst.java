@@ -34,6 +34,7 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
     float prevTickExhaustion = 0.0F;
     boolean justHealed = false;
     boolean shouldTickThirst = true;
+    boolean exhaustionRecalculate = false;
     boolean init = true;
 
     public PlayerThirst() {}
@@ -142,7 +143,7 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
             {
                 quenched--;
             }
-            else if (difficulty != Difficulty.PEACEFUL)
+            else if (difficulty != Difficulty.PEACEFUL || CommonConfig.THIRST_DEPLETION_IN_PEACEFUL.get())
             {
                 thirst = Math.max(thirst - 1, 0);
             }
@@ -151,13 +152,12 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
         ++syncTimer;
         if(syncTimer > 10 && !player.level().isClientSide())
         {
-            if(difficulty == Difficulty.PEACEFUL){
-                thirst++;
+            if(difficulty == Difficulty.PEACEFUL && !CommonConfig.THIRST_DEPLETION_IN_PEACEFUL.get()){
+                thirst = Math.min(thirst + 1,20);
             }
             updateThirstData(player);
             syncTimer = 0;
         }
-
         if (thirst <= 0)
         {
             ++damageTimer;
@@ -176,7 +176,10 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
     void updateExhaustion(Player player)
     {
         float hungerExhaustion = player.getFoodData().getExhaustionLevel();
-        float normalizedHungerExhaustion = hungerExhaustion < this.prevTickExhaustion ? hungerExhaustion + 4.0F : hungerExhaustion;
+        float normalizedHungerExhaustion = hungerExhaustion < this.prevTickExhaustion ? (exhaustionRecalculate ? hungerExhaustion + 4.0F : hungerExhaustion) : hungerExhaustion;
+        if(exhaustionRecalculate){
+            exhaustionRecalculate = false;
+        }
         float deltaExhaustion = normalizedHungerExhaustion - this.prevTickExhaustion;
         this.addExhaustion(player, deltaExhaustion);
         this.prevTickExhaustion = hungerExhaustion;
@@ -192,6 +195,9 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
     {
         justHealed = true;
     }
+
+    @Override
+    public void ExhaustionRecalculate(){exhaustionRecalculate = true;}
 
     @Override
     public void copy(IThirst cap)
