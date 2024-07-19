@@ -8,6 +8,8 @@
     "MixinBottleItem",
     "MixinBucketItem",
     "MixinCampfireBlockEntity",
+    "MixinFluidBucketWrapper",
+    "MixinFluidUtil",
     "MixinFoodData",
     "MixinItemStack",
     "MixinLayeredCauldronBlock",
@@ -23,6 +25,7 @@
     "create.MixinGenericItemFilling",
     "create.MixinIHaveGoggleInformation",
     "create.MixinOpenEndedPipe",
+    "farmersrespite.MixinKettleBlockEntity",
     "jade.MixinFluidView",
     "toughasnails.MixinEmptyCanteenItem",
     "toughasnails.MixinServerConfig",
@@ -31,7 +34,8 @@
     "toughasnails.MixinTooltipHandler"
   ],
   "client": [
-    "MixinLocalPlayer"
+    "MixinLocalPlayer",
+    "farmersrespite.MixinKettleScreen"
   ],
   "minVersion": "0.8"
 }

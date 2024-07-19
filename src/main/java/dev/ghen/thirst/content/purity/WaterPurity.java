@@ -36,12 +36,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,6 +50,7 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.jetbrains.annotations.NotNull;
 import toughasnails.api.item.TANItems;
 import umpaz.brewinandchewin.common.registry.BCItems;
+import umpaz.farmersrespite.common.registry.FRItems;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -92,7 +91,6 @@ public class WaterPurity
         if(ModList.get().isLoaded("farmersrespite"))
         {
             registerFarmersRespiteContainers();
-//            fillablesWithPurity.add(FRBlocks.KETTLE.get());
         }
 
         if(ModList.get().isLoaded("brewinandchewin"))
@@ -136,14 +134,33 @@ public class WaterPurity
 
     private static void registerFarmersRespiteContainers()
     {
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.GREEN_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.YELLOW_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.BLACK_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.ROSE_HIP_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.DANDELION_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.COFFEE.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.GAMBLERS_TEA.get())));
-//        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.PURULENT_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.GREEN_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.YELLOW_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.BLACK_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.ROSE_HIP_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.DANDELION_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.COFFEE.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.GAMBLERS_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.PURULENT_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_APPLE_CIDER.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_COFFEE.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_BLACK_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_DANDELION_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_GREEN_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_GAMBLERS_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_PURULENT_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_ROSE_HIP_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.LONG_YELLOW_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_APPLE_CIDER.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_COFFEE.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_BLACK_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_GREEN_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_HOT_COCOA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_GAMBLERS_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_MELON_JUICE.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_PURULENT_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_ROSE_HIP_TEA.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(FRItems.STRONG_YELLOW_TEA.get())));
     }
 
     private static void registerBrewinAndChewinContainers()
@@ -187,10 +204,8 @@ public class WaterPurity
             Level level = player.level();
             BlockPos pos = event.getHitVec().getBlockPos();
             BlockState blockState = level.getBlockState(pos);
-            //Trying to make compat with unregistered fluid container
-            BlockEntity entity = level.getBlockEntity(pos);
 
-            if (isFillableBlock(blockState) ||(entity != null&& entity.getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent()))
+            if (isFillableBlock(blockState))
             {
                 int purity = getPurity(event.getItemStack());
 
