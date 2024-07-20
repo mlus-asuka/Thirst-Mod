@@ -23,8 +23,7 @@ public class MixinFluidBucketWrapper {
      */
     @Overwrite
     public @NotNull FluidStack getFluid() {
-        Item item = this.container.getItem();
-        System.out.println(container.serializeNBT());
+        Item item = container.getItem();
         if (item instanceof BucketItem) {
             FluidStack stack = new FluidStack(((BucketItem) item).getFluid(), 1000);
             if(WaterPurity.hasPurity(container)){

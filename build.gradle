@@ -140,7 +140,6 @@ dependencies {
 //    implementation fg.deobf("curse.maven:create-central-kitchen-820977:4981424")
     implementation fg.deobf("curse.maven:tough-as-nails-246391:4624861")
     implementation fg.deobf("curse.maven:jade-324717:4768593")
-
     compileOnly fg.deobf("curse.maven:vampirism-become-a-vampire-233029:4783000")
 
     compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))

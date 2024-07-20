@@ -122,7 +122,7 @@ public class PlayerThirst implements IThirst
             {
                 quenched--;
             }
-            else if (difficulty != Difficulty.PEACEFUL)
+            else if (difficulty != Difficulty.PEACEFUL || CommonConfig.THIRST_DEPLETION_IN_PEACEFUL.get())
             {
                 thirst = Math.max(thirst - 1, 0);
             }
@@ -131,8 +131,8 @@ public class PlayerThirst implements IThirst
         ++syncTimer;
         if(syncTimer > 10 && !player.level().isClientSide())
         {
-            if(difficulty == Difficulty.PEACEFUL){
-                thirst = Math.max(thirst + 1,20);
+            if(difficulty == Difficulty.PEACEFUL && !CommonConfig.THIRST_DEPLETION_IN_PEACEFUL.get()){
+                thirst = Math.min(thirst + 1,20);
             }
             updateThirstData(player);
             syncTimer = 0;
@@ -228,6 +228,4 @@ public class PlayerThirst implements IThirst
         exhaustion = nbt.getFloat("exhaustion");
         shouldTickThirst = !nbt.contains("enable") || nbt.getBoolean("enable");
     }
-
-
 }
