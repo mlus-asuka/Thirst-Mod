@@ -9,6 +9,7 @@ import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
 import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -134,6 +135,14 @@ public class PlayerThirst implements IThirst
             if(difficulty == Difficulty.PEACEFUL && !CommonConfig.THIRST_DEPLETION_IN_PEACEFUL.get()){
                 thirst = Math.min(thirst + 1,20);
             }
+
+            final float angle = Mth.wrapDegrees(player.getXRot());
+            if (angle <= -80  && player.level().isRainingAt(player.blockPosition().above()))
+            {
+                thirst = Math.min(thirst + 1,20);
+                quenched = Math.min(quenched +1,20);
+            }
+
             updateThirstData(player);
             syncTimer = 0;
         }

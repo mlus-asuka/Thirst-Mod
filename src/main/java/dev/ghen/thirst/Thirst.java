@@ -3,6 +3,7 @@ package dev.ghen.thirst;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.compat.create.CreateRegistry;
 import dev.ghen.thirst.compat.create.ponder.ThirstPonders;
+import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.content.registry.ItemInit;
 import dev.ghen.thirst.content.thirst.PlayerThirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
@@ -14,7 +15,6 @@ import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import dev.ghen.thirst.foundation.gui.appleskin.HUDOverlayHandler;
 import dev.ghen.thirst.foundation.gui.appleskin.TooltipOverlayHandler;
 import dev.ghen.thirst.foundation.network.ThirstModPacketHandler;
-import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.foundation.tab.ThirstTab;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
@@ -27,11 +27,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+
 @Mod(Thirst.ID)
 public class Thirst
 {
     public static final String ID = "thirst";
-
     public Thirst()
     {
 
