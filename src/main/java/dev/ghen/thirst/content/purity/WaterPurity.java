@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-
 @SuppressWarnings("SpellCheckingInspection")
 @Mod.EventBusSubscriber
 public class WaterPurity
@@ -81,7 +80,6 @@ public class WaterPurity
     public static final IntegerProperty BLOCK_PURITY = IntegerProperty.create("purity", 0, 4);
     public static boolean FarmersDelightLoaded = false;
     public static boolean TANLoaded=false;
-
     public static void init()
     {
         registerDispenserBehaviours();
@@ -230,7 +228,8 @@ public class WaterPurity
     public static ItemStack getFilledContainer(ItemStack container, boolean fromFilled)
     {
         for (ContainerWithPurity waterContainer : waterContainers)
-            if ((!fromFilled && waterContainer.equalsEmpty(container)) || (fromFilled && waterContainer.equalsFilled(container)))
+            if ((!fromFilled && waterContainer.equalsEmpty(container)) ||
+                    (fromFilled && waterContainer.equalsFilled(container)))
                 return waterContainer.getFilledItem().copy();
 
         return ItemStack.EMPTY.copy();

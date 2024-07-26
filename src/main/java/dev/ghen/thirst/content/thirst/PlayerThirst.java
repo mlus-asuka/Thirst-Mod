@@ -127,7 +127,7 @@ public class PlayerThirst implements IThirst
         if(syncTimer > 10 && !player.getLevel().isClientSide())
         {
             if(difficulty == Difficulty.PEACEFUL && !CommonConfig.THIRST_DEPLETION_IN_PEACEFUL.get()){
-                thirst = Math.max(thirst + 1,20);
+                thirst = Math.min(thirst + 1,20);
             }
             updateThirstData(player);
             syncTimer = 0;
