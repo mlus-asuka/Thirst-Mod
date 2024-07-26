@@ -38,6 +38,8 @@ public record DrinkByHandMessage(Vector3f pos) implements CustomPacketPayload
             {
                 Player player = context.player();
                 Level level = player.level();
+                if(player.getData(ModAttachment.PLAYER_THIRST).getThirst()==20)
+                    return;
 
                 int purity = WaterPurity.getBlockPurity(level, new BlockPos((int) data.pos.x, (int) data.pos.y, (int) data.pos.z));
                 level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_DRINK, SoundSource.NEUTRAL, 1.0F, 1.0F);

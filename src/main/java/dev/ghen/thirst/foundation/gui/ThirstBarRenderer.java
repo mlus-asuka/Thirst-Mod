@@ -1,6 +1,7 @@
 package dev.ghen.thirst.foundation.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import de.teamlapen.vampirism.util.Helper;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
@@ -37,14 +38,14 @@ public class ThirstBarRenderer
         cancelRender =false;
         if (!isMounted && !minecraft.options.hideGui && HUDOverlayHandler.shouldDrawSurvivalElements(minecraft))
         {
-//            if(checkIfPlayerIsVampire)
-//            {
-//                if(Helper.isVampire(gui.getMinecraft().player))
-//                {
-//                    cancelRender =true;
-//                    return;
-//                }
-//            }
+            if(checkIfPlayerIsVampire)
+            {
+                if(Helper.isVampire(minecraft.player))
+                {
+                    cancelRender =true;
+                    return;
+                }
+            }
 
             if(minecraft.player.isAlive() && !minecraft.player.getData(ModAttachment.PLAYER_THIRST).getShouldTickThirst()){
                 cancelRender = true;

@@ -22,6 +22,7 @@ public class CommonConfig
     public static final ModConfigSpec.IntValue FIRE_RESISTANCE_DEHYDRATION;
     public static final ModConfigSpec.ConfigValue<Boolean> DEPLETES_WHEN_NAUSED;
     public static final ModConfigSpec.ConfigValue<Boolean> MOVE_SLOW_WHEN_THIRSTY;
+    public static final ModConfigSpec.ConfigValue<Boolean> CAN_DRINK_RAIN_WATETR;
     public static final ModConfigSpec.ConfigValue<Integer> WATER_BOTTLE_STACKSIZE;
     public static final ModConfigSpec.ConfigValue<Boolean> DEHYDRATION_HALTS_HEALTH_REGEN;
     public static final ModConfigSpec.ConfigValue<Boolean> HEALTH_REGEN_DEHYDRATION_IS_BIOME_DEPENDENT;
@@ -62,6 +63,7 @@ public class CommonConfig
         FIRE_RESISTANCE_DEHYDRATION = BUILDER.comment("How much faster is hydration depletion when players with fire resistance(Range 0 to 100, 0 means not to depletion,100 means depletion like normal)").defineInRange("fireResistanceDehydration",0,0,100);
         DEPLETES_WHEN_NAUSED = BUILDER.comment("Thirst depletes when player is nausea").define("depletesWhenNausea",true);
         MOVE_SLOW_WHEN_THIRSTY=BUILDER.comment("Whether players won't be able to sprint if their thirst bar is 3 droplets or less").define("moveSlowWhenThirsty",true);
+        CAN_DRINK_RAIN_WATETR = BUILDER.comment("Whether players can drink rain water").define("DrinkRainWater",true);
         BUILDER.pop();
 
         BUILDER.push("Drinking Mechanics");
