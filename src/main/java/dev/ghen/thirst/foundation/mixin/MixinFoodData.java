@@ -18,6 +18,8 @@ public abstract class MixinFoodData
 {
     @Shadow
     public abstract void addExhaustion(float p_38704_);
+
+    @Shadow private float exhaustionLevel;
     @Unique
     private int dehydratedHealTimer = 0;
 
@@ -76,17 +78,10 @@ public abstract class MixinFoodData
             this.addExhaustion(-6.0F);
     }
 
-    @Inject(method = "tick",at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F"))
+    @Inject(method = "tick",at = @At(value = "HEAD"))
     private void DealWithExhaustionBySaturation(Player player, CallbackInfo ci){
-        if(!player.getCapability(ModCapabilities.PLAYER_THIRST).isPresent())
-            return;
-        IThirst thirstData =  player.getCapability(ModCapabilities.PLAYER_THIRST).orElse(null);
-        thirstData.ExhaustionRecalculate();
+        if(exhaustionLevel>4.0F){
+            player.getCapability(ModCapabilities.PLAYER_THIRST).ifPresent(IThirst::ExhaustionRecalculate);
+        }
     }
-
-    @Inject(method = "tick",at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(II)I"))
-    private void DealWithExhaustionByHunger(Player player, CallbackInfo ci){
-        DealWithExhaustionBySaturation(player, ci);
-    }
-
 }
