@@ -1,5 +1,6 @@
 package dev.ghen.thirst.content.purity;
 
+import com.simibubi.create.AllItems;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.content.registry.ItemInit;
 import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
@@ -107,6 +108,10 @@ public class WaterPurity
         {
             registerToughAsNailsContainers();
             tanLoaded = true;
+        }
+
+        if(ModList.get().isLoaded("create")){
+            waterContainers.add(new ContainerWithPurity(new ItemStack(AllItems.BUILDERS_TEA.get())));
         }
     }
 
