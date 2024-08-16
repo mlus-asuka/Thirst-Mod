@@ -10,6 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class MixinAbstractFurnaceEntity {
     @Redirect(method = "canBurn",at= @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean canBurn(ItemStack remainItem, ItemStack recipeResult){
-        return remainItem.areShareTagsEqual(recipeResult);
+        return ItemStack.isSameItemSameTags(remainItem,recipeResult);
     }
 }
