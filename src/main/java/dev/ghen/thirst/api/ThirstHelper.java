@@ -34,8 +34,6 @@ public class ThirstHelper
             .getItemsWithValues(ItemSettingsConfig.FOODS.get()))
             .get();
 
-    private static boolean INITILIZED=false;
-
     public static void init(){
         ThirstEventFactory.onRegisterThirstValue();
 
@@ -55,11 +53,6 @@ public class ThirstHelper
 
     public static boolean itemRestoresThirst(ItemStack itemStack)
     {
-        if(!INITILIZED){
-            init();
-            INITILIZED=true;
-        }
-
         return isDrink(itemStack) ||
                 isFood(itemStack) || checkKeywords(itemStack);
     }
@@ -115,7 +108,7 @@ public class ThirstHelper
     public static int getPurity(ItemStack item)
     {
         if(!hasPurity(item))
-            return -1;
+            return 3;
         else {
             assert item.getTag() != null;
             return item.getTag().getInt("Purity");

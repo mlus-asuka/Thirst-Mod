@@ -14,7 +14,6 @@ public class CommonConfig
     private static final ForgeConfigSpec SPEC;
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-
     public static final ForgeConfigSpec.ConfigValue<Number> THIRST_DEPLETION_MODIFIER;
     public static final ForgeConfigSpec.ConfigValue<Boolean> THIRST_DEPLETION_IN_PEACEFUL;
     public static final ForgeConfigSpec.DoubleValue NETHER_THIRST_DEPLETION_MODIFIER;
@@ -36,7 +35,6 @@ public class CommonConfig
     public static final ForgeConfigSpec.ConfigValue<Number> CAVES_Y;
     public static final ForgeConfigSpec.ConfigValue<Number> RUNNING_WATER_PURIFICATION_AMOUNT;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> DEFAULT_PURITY;
     public static final ForgeConfigSpec.ConfigValue<Boolean> QUENCH_THIRST_WHEN_DEBUFFED;
     public static final ForgeConfigSpec.ConfigValue<Number> DIRTY_POISON_PERCENTAGE;
     public static final ForgeConfigSpec.ConfigValue<Number> DIRTY_NAUSEA_PERCENTAGE;
@@ -84,7 +82,6 @@ public class CommonConfig
         BUILDER.pop();
 
         BUILDER.push("Purity-related Effects");
-        DEFAULT_PURITY =  BUILDER.comment("Purity for drinks that normally have purity but for whatever reason don't have a value set").define("defaultPurity", 3);
         QUENCH_THIRST_WHEN_DEBUFFED =  BUILDER.comment("Whether player should gain hydration even if they recieved a purity-related debuff").define("quenchThirstWhenDebuffed", true);
         DIRTY_POISON_PERCENTAGE =  BUILDER.comment("% of getting poisoned after drinking dirty water").define("dirtyPoisonPercentage", 30);
         DIRTY_NAUSEA_PERCENTAGE =  BUILDER.comment("% of getting sick (hunger and nausea) after drinking dirty water").define("dirtyNauseaPercentage", 100);

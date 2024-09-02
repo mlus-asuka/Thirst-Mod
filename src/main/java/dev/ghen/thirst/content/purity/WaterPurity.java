@@ -385,10 +385,10 @@ public class WaterPurity
     {
         if(!item.getOrCreateTag().contains("Purity"))
         {
-            item.getOrCreateTag().putInt("Purity", CommonConfig.DEFAULT_PURITY.get());
-
             if(tanLoaded && Objects.equals(item.getItem().getCreatorModId(item), "toughasnails"))
-                tanPurity(item);
+                return tanPurity(item);
+
+            return 2;
         }
 
         return Objects.requireNonNull(item.getTag()).getInt("Purity");
@@ -398,17 +398,14 @@ public class WaterPurity
      * Sets the purity of special items in other mods
      */
 
-    public static void tanPurity(ItemStack item)
+    public static int tanPurity(ItemStack item)
     {
-        assert item.getTag() != null;
-
-        item.getTag().putInt("Purity", 3);
-
         if(item.is(TANItems.DIRTY_WATER_BOTTLE.get()) || item.is(TANItems.DIRTY_WATER_CANTEEN.get()))
-            item.getTag().putInt("Purity", 0);
+            return 0;
 
         if(item.is(TANItems.WATER_CANTEEN.get()))
-            item.getTag().putInt("Purity", 2);
+            return 2;
+        return 3;
     }
 
     /**
@@ -417,7 +414,7 @@ public class WaterPurity
     public static int getPurity(FluidStack fluid)
     {
         if(!fluid.getOrCreateTag().contains("Purity"))
-            fluid.getOrCreateTag().putInt("Purity", CommonConfig.DEFAULT_PURITY.get());
+            return 2;
 
         return fluid.getTag().getInt("Purity");
     }
@@ -528,7 +525,7 @@ public class WaterPurity
             return level.getBlockState(pos).getValue(BLOCK_PURITY) - 1;
         }
         else
-            return CommonConfig.DEFAULT_PURITY.get();
+            return 2;
     }
 
     /**
@@ -539,10 +536,7 @@ public class WaterPurity
     {
         if(!isWaterFilledContainer(item)) return true;
         if(!hasPurity(item)) return true;
-        if(getPurity(item)!=-1)
-            return givePurityEffects(player, ThirstHelper.getPurity(item));
-        else
-            return givePurityEffects(player, CommonConfig.DEFAULT_PURITY.get());
+        return givePurityEffects(player, ThirstHelper.getPurity(item));
     }
 
     /**

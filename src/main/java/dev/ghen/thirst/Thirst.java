@@ -72,6 +72,7 @@ public class Thirst
     {
         WaterPurity.init();
         ThirstModPacketHandler.init();
+        ThirstHelper.init();
 
         if(ModList.get().isLoaded("coldsweat"))
             ThirstHelper.shouldUseColdSweatCaps(true);
