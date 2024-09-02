@@ -23,9 +23,7 @@ public class MixinGenericItemEmptying
         if(WaterPurity.hasPurity(stack)){
             FluidStack fluidStack=output.getFirst();
             if(fluidStack.isEmpty()) return;
-            CompoundTag tag = fluidStack.getOrCreateTag();
-            tag.putInt("Purity", WaterPurity.getPurity(stack));
-            fluidStack.setTag(tag);
+            WaterPurity.addPurity(fluidStack,WaterPurity.getPurity(stack));
             cir.setReturnValue(Pair.of(fluidStack,output.getSecond()));
         }
     }

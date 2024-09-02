@@ -15,8 +15,7 @@
   "result": {
     "item":"minecraft:potion",
     "nbt": {
-      "Potion": "minecraft:water",
-      "Purity": 2
+      "Potion": "minecraft:water"
     }
   },
   "experience": 0.35,

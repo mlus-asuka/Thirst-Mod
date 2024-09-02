@@ -488,7 +488,10 @@ public class WaterPurity
     public static ItemStack addPurity(ItemStack item, int purity)
     {
         CompoundTag tag = item.getOrCreateTag();
-        tag.putInt("Purity", purity);
+        if(purity==2)
+            tag.remove("Purity");
+        else
+            tag.putInt("Purity", purity);
 
         return item;
     }
@@ -499,7 +502,10 @@ public class WaterPurity
     public static FluidStack addPurity(FluidStack fluid, int purity)
     {
         CompoundTag tag = fluid.getOrCreateTag();
-        tag.putInt("Purity", purity);
+        if(purity==2)
+            tag.remove("Purity");
+        else
+            tag.putInt("Purity", purity);
 
         return fluid;
     }
