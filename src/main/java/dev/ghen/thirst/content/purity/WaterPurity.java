@@ -388,7 +388,7 @@ public class WaterPurity
             if(tanLoaded && Objects.equals(item.getItem().getCreatorModId(item), "toughasnails"))
                 return tanPurity(item);
 
-            return 2;
+            return CommonConfig.DEFAULT_PURITY.get();
         }
 
         return Objects.requireNonNull(item.getTag()).getInt("Purity");
@@ -414,7 +414,7 @@ public class WaterPurity
     public static int getPurity(FluidStack fluid)
     {
         if(!fluid.getOrCreateTag().contains("Purity"))
-            return 2;
+            return CommonConfig.DEFAULT_PURITY.get();
 
         return fluid.getTag().getInt("Purity");
     }
@@ -488,7 +488,7 @@ public class WaterPurity
     public static ItemStack addPurity(ItemStack item, int purity)
     {
         CompoundTag tag = item.getOrCreateTag();
-        if(purity==2)
+        if(purity==CommonConfig.DEFAULT_PURITY.get())
             tag.remove("Purity");
         else
             tag.putInt("Purity", purity);
@@ -502,7 +502,7 @@ public class WaterPurity
     public static FluidStack addPurity(FluidStack fluid, int purity)
     {
         CompoundTag tag = fluid.getOrCreateTag();
-        if(purity==2)
+        if(purity==CommonConfig.DEFAULT_PURITY.get())
             tag.remove("Purity");
         else
             tag.putInt("Purity", purity);
@@ -531,7 +531,7 @@ public class WaterPurity
             return level.getBlockState(pos).getValue(BLOCK_PURITY) - 1;
         }
         else
-            return 2;
+            return CommonConfig.DEFAULT_PURITY.get();
     }
 
     /**

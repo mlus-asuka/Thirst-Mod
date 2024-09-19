@@ -102,6 +102,7 @@ public class PlayerThirst implements IThirst
             return;
 
         boolean isNourished = checkFDEffects && player.hasEffect(ModEffects.NOURISHMENT.get());
+        boolean isHunger = player.hasEffect(MobEffects.HUNGER);
         boolean isStuffed = checkLetsDoBakeryEffects &&
                 player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("stuffed"));
         boolean isSaturated = checkLetsDoBreweryEffects &&
@@ -110,6 +111,13 @@ public class PlayerThirst implements IThirst
 
         if(CommonConfig.DEPLETES_WHEN_NAUSEA.get() && player.getActiveEffects().stream().anyMatch(e->e.getEffect().equals(MobEffects.CONFUSION))){
             addExhaustion(player,0.06F);
+        }
+
+        if(isHunger){
+            exhaustion -= 0.005F * (float)(player.getEffect(MobEffects.HUNGER).getAmplifier() + 1) *
+                    ThirstHelper.getExhaustionBiomeModifier(player) *
+                    ThirstHelper.getExhaustionFireProtModifier(player)*
+                    ThirstHelper.getExhaustionFireResistanceModifier(player);
         }
 
         if (!isSitting && !isNourished && !isStuffed && !isSaturated)
