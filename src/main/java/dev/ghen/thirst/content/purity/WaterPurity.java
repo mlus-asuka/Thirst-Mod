@@ -1,6 +1,5 @@
 package dev.ghen.thirst.content.purity;
 
-import com.simibubi.create.AllItems;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.content.registry.ItemInit;
 import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
@@ -8,7 +7,6 @@ import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.util.MathHelper;
 import dev.ghen.thirst.foundation.util.ReflectionUtil;
 import dev.ghen.thirst.foundation.util.TickHelper;
-import net.brdle.collectorsreap.common.item.CRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -99,19 +97,10 @@ public class WaterPurity
             registerBrewinAndChewinContainers();
         }
 
-        if (ModList.get().isLoaded("collectorsreap"))
-        {
-            registerCollectorsReapContainers();
-        }
-
         if(ModList.get().isLoaded("toughasnails"))
         {
             registerToughAsNailsContainers();
             tanLoaded = true;
-        }
-
-        if(ModList.get().isLoaded("create")){
-            waterContainers.add(new ContainerWithPurity(new ItemStack(AllItems.BUILDERS_TEA.get())));
         }
     }
 
@@ -130,11 +119,6 @@ public class WaterPurity
     {
         fillablesWithPurity.add(Blocks.CAULDRON);
         fillablesWithPurity.add(Blocks.WATER_CAULDRON);
-    }
-
-    private static void registerCollectorsReapContainers(){
-        waterContainers.add(new ContainerWithPurity(new ItemStack(CRItems.POMEGRANATE_BLACK_TEA.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(CRItems.LIME_GREEN_TEA.get())));
     }
 
     private static void registerFarmersRespiteContainers()

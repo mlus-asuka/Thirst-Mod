@@ -21,6 +21,7 @@ public class ItemSettingsConfig
     public static final ForgeConfigSpec.ConfigValue<List<? extends List<?>>> FOODS;
     public static final ForgeConfigSpec.ConfigValue<List<String>> ITEMS_BLACKLIST;
 
+
     static
     {
         BUILDER.push("Drinks")
@@ -145,6 +146,8 @@ public class ItemSettingsConfig
                 "of that item, add an entry in one of the first two lists. If instead you want to remove thirst support for that item, add an entry in this list",
                 "Format: [\"examplemod:example_item_1\", \"examplemod:example_item_2\"]")
                 .define("itemsBlacklist", new ArrayList<>());
+
+
 
         SPEC = BUILDER.build();
     }

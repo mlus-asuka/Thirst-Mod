@@ -73,6 +73,8 @@ public class PlayerThirst implements IThirst
     public void drink(Player player, int thirst, int quenched)
     {
         int extra_quenched = Math.max(this.thirst + thirst - 20, 0);
+        if(!CommonConfig.EXTRA_HYDRATION_CONVERT_TO_QUENCHED.get())
+            extra_quenched = 0;
         this.thirst = Math.min(this.thirst + thirst, 20);
         this.quenched = Math.min(this.quenched + quenched + extra_quenched, this.thirst);
     }
