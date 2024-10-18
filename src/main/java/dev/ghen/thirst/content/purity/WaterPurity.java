@@ -48,6 +48,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import org.jetbrains.annotations.NotNull;
 import toughasnails.api.item.TANItems;
+import toughasnails.item.EmptyCanteenItem;
 import umpaz.brewinandchewin.common.registry.BCItems;
 import umpaz.farmersrespite.common.registry.FRItems;
 
@@ -170,18 +171,35 @@ public class WaterPurity
 
     private static void registerToughAsNailsContainers()
     {
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PURIFIED_WATER_CANTEEN.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIRTY_WATER_CANTEEN.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.WATER_CANTEEN.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PURIFIED_WATER_BOTTLE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIRTY_WATER_BOTTLE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.APPLE_JUICE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.CACTUS_JUICE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.CHORUS_FRUIT_JUICE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.GLOW_BERRY_JUICE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.MELON_JUICE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PUMPKIN_JUICE.get())));
-        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.SWEET_BERRY_JUICE.get())));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.LEATHER_DIRTY_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.COPPER_DIRTY_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.IRON_DIRTY_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.GOLD_DIRTY_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIAMOND_DIRTY_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.NETHERITE_DIRTY_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.LEATHER_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.COPPER_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.IRON_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.GOLD_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIAMOND_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.NETHERITE_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.LEATHER_PURIFIED_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.COPPER_PURIFIED_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.IRON_PURIFIED_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.GOLD_PURIFIED_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIAMOND_PURIFIED_WATER_CANTEEN)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.NETHERITE_PURIFIED_WATER_CANTEEN)));
+
+
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PURIFIED_WATER_BOTTLE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.DIRTY_WATER_BOTTLE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.APPLE_JUICE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.CACTUS_JUICE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.CHORUS_FRUIT_JUICE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.GLOW_BERRY_JUICE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.MELON_JUICE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.PUMPKIN_JUICE)));
+        waterContainers.add(new ContainerWithPurity(new ItemStack(TANItems.SWEET_BERRY_JUICE)));
     }
 
     @SubscribeEvent
@@ -384,11 +402,16 @@ public class WaterPurity
 
     public static int tanPurity(ItemStack item)
     {
-        if(item.is(TANItems.DIRTY_WATER_BOTTLE.get()) || item.is(TANItems.DIRTY_WATER_CANTEEN.get()))
+        if(item.is(TANItems.DIRTY_WATER_BOTTLE))
             return 0;
 
-        if(item.is(TANItems.WATER_CANTEEN.get()))
-            return 2;
+        if(item.getItem() instanceof EmptyCanteenItem canteenItem){
+            if(item.getItem().equals(canteenItem.getDirtyWaterCanteen())){
+                return 0;
+            }else if(item.getItem().equals(canteenItem.getWaterCanteen())){
+                return 2;
+            }
+        }
         return 3;
     }
 

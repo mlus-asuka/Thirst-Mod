@@ -26,7 +26,7 @@ import toughasnails.api.block.TANBlocks;
 import toughasnails.block.RainCollectorBlock;
 import toughasnails.item.EmptyCanteenItem;
 
-@Mixin(EmptyCanteenItem.class)
+@Mixin(value = EmptyCanteenItem.class,remap = false)
 public abstract class MixinEmptyCanteenItem {
 
     @Shadow(remap = false)
