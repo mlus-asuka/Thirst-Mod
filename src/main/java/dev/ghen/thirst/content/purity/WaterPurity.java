@@ -96,11 +96,6 @@ public class WaterPurity
 //            registerBrewinAndChewinContainers();
         }
 
-        if (ModList.get().isLoaded("collectorsreap"))
-        {
-            registerCollectorsReapContainers();
-        }
-
         if(ModList.get().isLoaded("toughasnails"))
         {
             registerToughAsNailsContainers();
@@ -123,11 +118,6 @@ public class WaterPurity
     {
         fillablesWithPurity.add(Blocks.CAULDRON);
         fillablesWithPurity.add(Blocks.WATER_CAULDRON);
-    }
-
-    private static void registerCollectorsReapContainers(){
-//        waterContainers.add(new ContainerWithPurity(CRItems.POMEGRANATE_BLACK_TEA));
-//        waterContainers.add(new ContainerWithPurity(CRItems.LIME_GREEN_TEA));
     }
 
     private static void registerFarmersRespiteContainers()
@@ -476,6 +466,8 @@ public class WaterPurity
     public static ItemStack addPurity(ItemStack item, int purity)
     {
         item.set(ThirstComponent.PURITY,purity);
+        if(purity==CommonConfig.DEFAULT_PURITY.get())
+            item.remove(ThirstComponent.PURITY);
         return item;
     }
 
@@ -485,6 +477,8 @@ public class WaterPurity
     public static FluidStack addPurity(FluidStack fluid, int purity)
     {
         fluid.set(ThirstComponent.PURITY,purity);
+        if(purity==CommonConfig.DEFAULT_PURITY.get())
+            fluid.remove(ThirstComponent.PURITY);
         return fluid;
     }
 

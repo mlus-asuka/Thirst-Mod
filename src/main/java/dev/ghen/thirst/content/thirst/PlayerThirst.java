@@ -1,5 +1,6 @@
 package dev.ghen.thirst.content.thirst;
 
+import de.teamlapen.vampirism.util.Helper;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.damagesource.ModDamageSource;
@@ -78,6 +79,8 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
     public void drink(int thirst, int quenched)
     {
         int extra_quenched = Math.max(this.thirst + thirst - 20, 0);
+        if(!CommonConfig.EXTRA_HYDRATION_CONVERT_TO_QUENCHED.get())
+            extra_quenched = 0;
         this.thirst = Math.min(this.thirst + thirst, 20);
         this.quenched = Math.min(this.quenched + quenched + extra_quenched, this.thirst);
     }
@@ -103,8 +106,8 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
         if(checkTombstoneEffects && player.getActiveEffects().stream().anyMatch(e -> e.getDescriptionId().contains("ghostly_shape")))
             return;
 
-//        if(checkVampirismEffects && Helper.isVampire(player))
-//            return;
+        if(checkVampirismEffects && Helper.isVampire(player))
+            return;
 
         AtomicBoolean isNourished = new AtomicBoolean(false);
         AtomicBoolean isStuffed = new AtomicBoolean(false);
@@ -128,14 +131,19 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
             return true;
         });
 
-
-
+        boolean isHunger = player.hasEffect(MobEffects.HUNGER);
         boolean isSitting = player.isPassenger();
+
+        if(isHunger){
+            exhaustion -= 0.005F * (float)(player.getEffect(MobEffects.HUNGER).getAmplifier() + 1) *
+                    ThirstHelper.getExhaustionBiomeModifier(player) *
+                    ThirstHelper.getExhaustionFireProtModifier(player)*
+                    ThirstHelper.getExhaustionFireResistanceModifier(player);
+        }
 
         if (!isSitting && !isNourished.get() && !isStuffed.get() && !isSaturated.get())
         {
             updateExhaustion(player);
-
         }
 
         if (exhaustion > 4)
@@ -164,9 +172,11 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
                 thirst = Math.min(thirst + 1,20);
                 quenched = Math.min(quenched +1,20);
             }
+
             updateThirstData(player);
             syncTimer = 0;
         }
+
         if (thirst <= 0)
         {
             ++damageTimer;

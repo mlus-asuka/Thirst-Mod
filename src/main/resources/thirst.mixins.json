@@ -14,6 +14,7 @@
     "MixinItemStack",
     "MixinLayeredCauldronBlock",
     "MixinPotionItem",
+    "accessors.farmersdelight.SyncedBlockEntityAccessor",
     "jade.MixinFluidView",
     "toughasnails.MixinEmptyCanteenItem",
     "toughasnails.MixinServerConfig",

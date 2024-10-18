@@ -7,10 +7,7 @@ import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.content.thirst.PlayerThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.common.loot.ModLootModifiers;
-import dev.ghen.thirst.foundation.config.ClientConfig;
-import dev.ghen.thirst.foundation.config.CommonConfig;
-import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
-import dev.ghen.thirst.foundation.config.KeyWordConfig;
+import dev.ghen.thirst.foundation.config.*;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import dev.ghen.thirst.foundation.gui.appleskin.HUDOverlayHandler;
 import dev.ghen.thirst.foundation.gui.appleskin.OverlayRegister;
@@ -66,6 +63,7 @@ public class Thirst
         CommonConfig.setup(modContainer);
         ClientConfig.setup(modContainer);
         KeyWordConfig.setup(modContainer);
+        ContainerConfig.setup(modContainer);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

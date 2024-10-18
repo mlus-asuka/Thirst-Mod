@@ -1,7 +1,6 @@
 package dev.ghen.thirst.foundation.mixin;
 
 import dev.ghen.thirst.content.purity.WaterPurity;
-import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.foundation.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -40,7 +39,7 @@ public class MixinBucketItem
     {
         if(shouldModify)
         {
-            result.set(ThirstComponent.PURITY,purity);
+            WaterPurity.addPurity(result,purity);
         }
 
         return result;

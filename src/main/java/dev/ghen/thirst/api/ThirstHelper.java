@@ -1,9 +1,13 @@
 package dev.ghen.thirst.api;
 
+import com.momosoftworks.coldsweat.api.util.Temperature;
+import dev.ghen.thirst.content.purity.ContainerWithPurity;
+import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.foundation.common.event.RegisterThirstValueEvent;
 import dev.ghen.thirst.foundation.common.event.ThirstEventFactory;
 import dev.ghen.thirst.foundation.config.CommonConfig;
+import dev.ghen.thirst.foundation.config.ContainerConfig;
 import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
 import dev.ghen.thirst.foundation.config.KeyWordConfig;
 import dev.ghen.thirst.foundation.util.ConfigHelper;
@@ -18,6 +22,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,10 +40,15 @@ public class ThirstHelper
             .getItemsWithValues(ItemSettingsConfig.FOODS.get()))
             .get();
 
-    private static boolean INITILIZED=false;
+    public static List<Item> containers = LoadedValue.of(() -> ConfigHelper
+                    .getItems(ContainerConfig.CONTAINERS.get()))
+            .get();
 
     public static void init(){
         ThirstEventFactory.onRegisterThirstValue();
+        for (Item item : containers){
+            WaterPurity.addContainer(new ContainerWithPurity(item));
+        }
     }
 
     public static String keywordBlackList = KeyWordConfig.KEYWORD_BLACKLIST.get();
@@ -48,11 +58,6 @@ public class ThirstHelper
 
     public static boolean itemRestoresThirst(ItemStack itemStack)
     {
-        if(!INITILIZED){
-            init();
-            INITILIZED=true;
-        }
-
         return isDrink(itemStack) ||
                 isFood(itemStack) || checkKeywords(itemStack);
     }
@@ -159,7 +164,7 @@ public class ThirstHelper
 
             if(useColdSweatCaps)
                 {
-//                    temp = (float) (Temperature.get(player, Temperature.Type.BODY) / 100f);
+                    temp = (float) (Temperature.get(player, Temperature.Trait.BODY) / 100f);
                 }
             else
             {
