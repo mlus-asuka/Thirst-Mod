@@ -9,7 +9,6 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ItemSettingsConfig
 
     public static final ModConfigSpec.ConfigValue<List<? extends List<?>>> DRINKS;
     public static final ModConfigSpec.ConfigValue<List<? extends List<?>>> FOODS;
-    public static final ModConfigSpec.ConfigValue<List<String>> ITEMS_BLACKLIST;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEMS_BLACKLIST;
 
     static
     {
@@ -128,7 +127,13 @@ public class ItemSettingsConfig
         ITEMS_BLACKLIST = BUILDER.comment("A mod may have added thirst compatibility to an item via code. If you want to edit the thirst values",
                 "of that item, add an entry in one of the first two lists. If instead you want to remove thirst support for that item, add an entry in this list",
                 "Format: [\"examplemod:example_item_1\", \"examplemod:example_item_2\"]")
-                .define("itemsBlacklist", new ArrayList<>());
+                .defineList("itemsBlacklist", Arrays.asList(
+                                        "examplemod:example_item_1",
+                                        "examplemod:example_item_2"
+                        ),
+                        it -> it instanceof String);
+
+
 
         SPEC = BUILDER.build();
     }

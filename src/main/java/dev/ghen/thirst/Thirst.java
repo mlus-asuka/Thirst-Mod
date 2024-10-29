@@ -69,7 +69,6 @@ public class Thirst
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         WaterPurity.init();
-        ThirstHelper.init();
 
         if(ModList.get().isLoaded("coldsweat"))
             ThirstHelper.shouldUseColdSweatCaps(true);

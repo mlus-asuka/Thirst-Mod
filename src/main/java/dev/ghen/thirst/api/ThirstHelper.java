@@ -113,7 +113,7 @@ public class ThirstHelper
     public static int getPurity(ItemStack item)
     {
         if(!hasPurity(item))
-            return -1;
+            return CommonConfig.DEFAULT_PURITY.get();
         else {
             return item.get(ThirstComponent.PURITY);
         }

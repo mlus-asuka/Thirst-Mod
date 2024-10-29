@@ -46,7 +46,7 @@ public class ConfigHelper
         return map;
     }
 
-    public static List<Item> getItems(List<String> source){
+    public static List<Item> getItems(List<? extends String> source){
         List<Item> list = new ArrayList<>();
         for(String itemID : source){
             if (itemID.startsWith("#"))
