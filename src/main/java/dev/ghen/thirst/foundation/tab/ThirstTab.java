@@ -1,7 +1,6 @@
 package dev.ghen.thirst.foundation.tab;
 
 import dev.ghen.thirst.Thirst;
-import dev.ghen.thirst.compat.create.CreateRegistry;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.content.registry.ItemInit;
 import net.minecraft.core.registries.Registries;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -37,7 +35,8 @@ public class ThirstTab
     }
 
     public static Collection<ItemStack> DisplayItems() {
-        Collection<ItemStack> list=new ArrayList<>();
+        Collection<ItemStack> list = new ArrayList<>();
+
         list.add(WaterPurity.addPurity(new ItemStack(Items.WATER_BUCKET), 0));
         list.add(WaterPurity.addPurity(new ItemStack(Items.WATER_BUCKET), 1));
         list.add(WaterPurity.addPurity(new ItemStack(Items.WATER_BUCKET), 2));
@@ -48,11 +47,14 @@ public class ThirstTab
         list.add(WaterPurity.addPurity(PotionContents.createItemStack(Items.POTION,Potions.WATER), 3));
         list.add(ItemInit.CLAY_BOWL.get().getDefaultInstance());
         list.add(ItemInit.TERRACOTTA_BOWL.get().getDefaultInstance());
+        list.add(WaterPurity.addPurity(new ItemStack(ItemInit.TERRACOTTA_WATER_BOWL.get()), 0));
+        list.add(WaterPurity.addPurity(new ItemStack(ItemInit.TERRACOTTA_WATER_BOWL.get()), 1));
+        list.add(WaterPurity.addPurity(new ItemStack(ItemInit.TERRACOTTA_WATER_BOWL.get()), 2));
         list.add(ItemInit.TERRACOTTA_WATER_BOWL.get().getDefaultInstance());
 
-        // for some fucking reason the game crashes if you don't do it here
-        if(ModList.get().isLoaded("create"))
-            list.add(CreateRegistry.SAND_FILTER_BLOCK.asStack());
+//        if(ModList.get().isLoaded("create")){
+//            list.add(CreateRegistry.SAND_FILTER_BLOCK.asItem().getDefaultInstance());
+//        }
 
         return list;
     }
