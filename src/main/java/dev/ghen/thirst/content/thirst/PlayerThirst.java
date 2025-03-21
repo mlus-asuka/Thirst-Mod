@@ -3,6 +3,7 @@ package dev.ghen.thirst.content.thirst;
 import de.teamlapen.vampirism.util.Helper;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
+import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.common.damagesource.ModDamageSource;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import dev.ghen.thirst.foundation.network.message.PlayerThirstSyncMessage;
@@ -13,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
@@ -75,6 +77,19 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
     public void setShouldTickThirst(boolean value){shouldTickThirst = value;}
     @Override
     public boolean getShouldTickThirst(){return shouldTickThirst;}
+
+    /**
+     * Attempts to give hydration to player if item restores thirst.
+     * @param item
+     * @param player
+     */
+    public static void drink(ItemStack item, Player player)
+    {
+        if(ThirstHelper.itemRestoresThirst(item))
+        {
+            player.getData(ModAttachment.PLAYER_THIRST).drink(ThirstHelper.getThirst(item),ThirstHelper.getQuenched(item));
+        }
+    }
 
     public void drink(int thirst, int quenched)
     {

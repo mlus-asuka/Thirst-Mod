@@ -128,7 +128,7 @@ dependencies {
     compileOnly "curse.maven:vampirism-become-a-vampire-233029:5547201"
     implementation "curse.maven:farmers-delight-398521:6154807"
     implementation "curse.maven:cold-sweat-506194:5775318"
-    implementation "curse.maven:jade-324717:5427817"
+    implementation "curse.maven:jade-324717:6291517"
     implementation "curse.maven:appleskin-248787:5586600"
 
 //     compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

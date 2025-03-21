@@ -3,10 +3,12 @@ package dev.ghen.thirst.content.thirst;
 import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
+import dev.ghen.thirst.foundation.common.item.DrinkableItem;
 import dev.ghen.thirst.foundation.config.CommonConfig;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PotionItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -34,8 +36,16 @@ public class PlayerThirstManager {
     public static void drink(LivingEntityUseItemEvent.Finish event) {
         if (event.getEntity() instanceof Player && ThirstHelper.itemRestoresThirst(event.getItem())) {
             ItemStack item = event.getItem();
-            if (WaterPurity.givePurityEffects((Player) event.getEntity(), item))
+            if (WaterPurity.givePurityEffects((Player) event.getEntity(), item)){
+                if(event.getItem().getItem() instanceof PotionItem)
+                    return;
+                if(event.getItem().getFoodProperties(null) != null)
+                    return;
+                if(event.getItem().getItem() instanceof DrinkableItem)
+                    return;
                 event.getEntity().getData(ModAttachment.PLAYER_THIRST).drink(ThirstHelper.getThirst(item), ThirstHelper.getQuenched(item));
+            }
+
         }
     }
 

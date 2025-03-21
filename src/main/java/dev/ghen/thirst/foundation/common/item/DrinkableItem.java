@@ -1,12 +1,12 @@
 package dev.ghen.thirst.foundation.common.item;
 
+import dev.ghen.thirst.content.thirst.PlayerThirst;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +44,10 @@ public class DrinkableItem extends Item
         {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, item);
         }
+        if(player != null)
+        {
+            PlayerThirst.drink(item, player);
+        }
 
         if (player != null)
         {
@@ -63,8 +67,10 @@ public class DrinkableItem extends Item
 
             if (player != null)
             {
-                ItemEntity itemEntity = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), new ItemStack(container));
-                level.addFreshEntity(itemEntity);
+                ItemStack container = new ItemStack(this.container);
+                if (!player.getInventory().add(container)) {
+                    player.drop(container, false);
+                }
             }
         }
 
