@@ -1,7 +1,7 @@
 {
-  "conditions": [
+  "neoforge:conditions": [
     {
-      "type": "forge:mod_loaded",
+      "type": "neoforge:mod_loaded",
       "modid": "create"
     }
   ],
@@ -18,7 +18,7 @@
       "nbt": "{Purity:3}"
     },
     {
-        "item": "minecraft:green_dye"
+        "id": "minecraft:green_dye"
     }
   ]
 }
