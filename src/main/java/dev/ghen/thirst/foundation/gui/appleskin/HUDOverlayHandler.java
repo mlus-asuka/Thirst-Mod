@@ -144,7 +144,6 @@ public class HUDOverlayHandler {
             return;
 
         enableAlpha(alpha);
-        RenderSystem.setShaderTexture(0, modIcons);
 
         float modifiedSaturation = Math.max(0, Math.min(saturationLevel + saturationGained, 20));
 
@@ -191,7 +190,6 @@ public class HUDOverlayHandler {
             return;
 
         enableAlpha(alpha);
-        RenderSystem.setShaderTexture(0, ThirstBarRenderer.THIRST_ICONS);
 
         int modifiedFood = Math.max(0, Math.min(20, foodLevel + hungerRestored));
 
