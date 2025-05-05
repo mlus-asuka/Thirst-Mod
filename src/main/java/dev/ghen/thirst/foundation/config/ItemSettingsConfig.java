@@ -61,6 +61,7 @@ public class ItemSettingsConfig
                                         Arrays.asList("collectorsreap:pink_limeade",8,13),
                                         Arrays.asList("collectorsreap:pomegranate_black_tea",10,14),
                                         Arrays.asList("collectorsreap:lime_green_tea",10,14),
+                                        Arrays.asList("supernatural:blood_bottle",9,12),
 
                                         Arrays.asList("toughasnails:dirty_water_bottle", 6, 8),
                                         Arrays.asList("toughasnails:purified_water_bottle", 8, 10),
