@@ -10,7 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 
 public class SupernaturalHelper {
-    public static ResourceLocation VAMPIRE_THIRST_ICONS = Thirst.asResource("supernatural:textures/gui/thirst_icons.png");
+    public static ResourceLocation VAMPIRE_THIRST_ICONS = ResourceLocation.fromNamespaceAndPath("supernatural", "textures/gui/thirst_icons.png");
+    private static final ResourceLocation appleskinIcons = ResourceLocation.fromNamespaceAndPath("supernatural", "textures/gui/appleskin_icons.png");
 
     public static boolean canDrinkItem(ItemStack stack, Player player) {
         if (isVampireCheck(player)) {
@@ -44,6 +45,14 @@ public class SupernaturalHelper {
     public static ResourceLocation getVampireIcons(ResourceLocation original, Player player) {
         if (hasVampirismCheck(player) {
             return VAMPIRE_THIRST_ICONS;
+        }
+        return original;
+    }
+
+    //Grabs new Vampire Thirst Appleskin Icons.
+    public static ResourceLocation getVampireAppleskinIcons(ResourceLocation original, Player player) {
+        if (hasVampirismCheck(player) {
+            return appleskinIcons;
         }
         return original;
     }
