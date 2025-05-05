@@ -85,7 +85,7 @@ public class PlayerThirst implements IThirst, INBTSerializable<CompoundTag>
      */
     public static void drink(ItemStack item, Player player)
     {
-        if(ThirstHelper.itemRestoresThirst(item))
+        if(ThirstHelper.itemRestoresThirst(item) && ThirstHelper.playerRestoresThirst(item, player))
         {
             player.getData(ModAttachment.PLAYER_THIRST).drink(ThirstHelper.getThirst(item),ThirstHelper.getQuenched(item));
         }
