@@ -42,7 +42,7 @@ public class SupernaturalHelper {
 
     //Grabs new Vampire Thirst Icons.
     public static ResourceLocation getVampireIcons(ResourceLocation original, Player player) {
-        if (hasVampirismCheck(player) {
+        if (hasVampirismCheck(player)) {
             return VAMPIRE_THIRST_ICONS;
         }
         return original;
@@ -50,7 +50,7 @@ public class SupernaturalHelper {
 
     //Grabs new Vampire Thirst Appleskin Icons.
     public static ResourceLocation getVampireAppleskinIcons(ResourceLocation original, Player player) {
-        if (hasVampirismCheck(player) {
+        if (hasVampirismCheck(player)) {
             return appleskinIcons;
         }
         return original;
