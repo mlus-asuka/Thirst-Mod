@@ -3,10 +3,12 @@ package dev.ghen.thirst.foundation.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.teamlapen.vampirism.util.Helper;
 import dev.ghen.thirst.Thirst;
+import dev.ghen.thirst.compat.supernatural.SupernaturalHelper;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.config.ClientConfig;
 import dev.ghen.thirst.foundation.gui.appleskin.HUDOverlayHandler;
+import net.neoforged.fml.ModList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -84,8 +86,13 @@ public class ThirstBarRenderer
             PLAYER_THIRST = minecraft.player.getData(ModAttachment.PLAYER_THIRST);
         }
 
+        ResourceLocation thirst_icons = THIRST_ICONS;
+        if (ModList.get().isLoaded("supernatural")) {
+            thirst_icons = SupernaturalHelper.getVampireIcons(thirst_icons, minecraft.player);
+        }
+
         RenderSystem.enableBlend();
-        RenderSystem.setShaderTexture(0, THIRST_ICONS);
+        RenderSystem.setShaderTexture(0, thirst_icons);
         int left = width / 2 + 91 + ClientConfig.THIRST_BAR_X_OFFSET.get();
         int top = height - minecraft.gui.rightHeight + ClientConfig.THIRST_BAR_Y_OFFSET.get();
         minecraft.gui.rightHeight += 10;
@@ -103,12 +110,12 @@ public class ThirstBarRenderer
                 y = top + (random.nextInt(3) - 1);
             }
 
-            guiGraphics.blit(THIRST_ICONS, x, y, 0, 0, 9, 9, 25, 9);
+            guiGraphics.blit(thirst_icons, x, y, 0, 0, 9, 9, 25, 9);
 
             if (idx < level)
-                guiGraphics.blit(THIRST_ICONS, x, y, 16, 0, 9, 9, 25, 9);
+                guiGraphics.blit(thirst_icons, x, y, 16, 0, 9, 9, 25, 9);
             else if (idx == level)
-                guiGraphics.blit(THIRST_ICONS, x, y, 8, 0, 9, 9, 25, 9);
+                guiGraphics.blit(thirst_icons, x, y, 8, 0, 9, 9, 25, 9);
         }
         RenderSystem.disableBlend();
 
