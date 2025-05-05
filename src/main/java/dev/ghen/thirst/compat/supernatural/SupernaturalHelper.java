@@ -3,7 +3,6 @@ package dev.ghen.thirst.compat.supernatural;
 import net.salju.supernatural.init.SupernaturalItems;
 import net.salju.supernatural.init.SupernaturalTags;
 import net.salju.supernatural.events.SupernaturalManager;
-import dev.ghen.thirst.Thirst;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
