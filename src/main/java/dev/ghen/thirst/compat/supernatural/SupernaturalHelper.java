@@ -17,7 +17,7 @@ public class SupernaturalHelper {
     }
 
     //Checks for Persistent NBT Player Data for Vampirism. Serverside only.
-	public static boolean isVampireCheck(Player player) {
+    public static boolean isVampireCheck(Player player) {
         return SupernaturalManager.isVampire(player);
     }
 
