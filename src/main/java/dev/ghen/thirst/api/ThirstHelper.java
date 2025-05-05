@@ -1,6 +1,7 @@
 package dev.ghen.thirst.api;
 
 import com.momosoftworks.coldsweat.api.util.Temperature;
+import dev.ghen.thirst.compat.supernatural.SupernaturalHelper;
 import dev.ghen.thirst.content.purity.ContainerWithPurity;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.content.registry.ThirstComponent;
@@ -12,6 +13,7 @@ import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
 import dev.ghen.thirst.foundation.config.KeyWordConfig;
 import dev.ghen.thirst.foundation.util.ConfigHelper;
 import dev.ghen.thirst.foundation.util.LoadedValue;
+import net.neoforged.fml.ModList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffects;
@@ -63,6 +65,15 @@ public class ThirstHelper
     {
         return isDrink(itemStack) ||
                 isFood(itemStack) || checkKeywords(itemStack);
+    }
+
+    public static boolean playerRestoresThirst(ItemStack itemStack, Player player)
+    {
+        if (ModList.get().isLoaded("supernatural"))
+        {
+            return SupernaturalHelper.canDrinkItem(itemStack, player);
+        }
+        return true;
     }
 
     public static boolean isDrink(ItemStack itemStack)
