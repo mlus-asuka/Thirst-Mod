@@ -3,6 +3,7 @@ package dev.ghen.thirst.foundation.gui.appleskin;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.api.ThirstHelper;
+import dev.ghen.thirst.compat.supernatural.SupernaturalHelper;
 import dev.ghen.thirst.foundation.common.capability.IThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.config.ClientConfig;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.lwjgl.opengl.GL11;
@@ -147,6 +149,11 @@ public class HUDOverlayHandler {
 
         float modifiedSaturation = Math.max(0, Math.min(saturationLevel + saturationGained, 20));
 
+        ResourceLocation icons = modIcons;
+        if (ModList.get().isLoaded("supernatural")) {
+            icons = SupernaturalHelper.getVampireAppleskinIcons(modIcons, Minecraft.getInstance().player);
+        }
+
         int startSaturationBar = 0;
         int endSaturationBar = (int) Math.ceil(modifiedSaturation / 2.0F);
 
@@ -178,7 +185,7 @@ public class HUDOverlayHandler {
             else if (effectiveSaturationOfBar > .25)
                 u = iconSize;
 
-            guiGraphics.blit(modIcons, x, y, u, v, iconSize, iconSize);
+            guiGraphics.blit(icons, x, y, u, v, iconSize, iconSize);
         }
 
         disableAlpha();
@@ -227,7 +234,11 @@ public class HUDOverlayHandler {
 
     public static void drawExhaustionOverlay(float exhaustion, GuiGraphics guiGraphics, int right, int top)
     {
-        RenderSystem.setShaderTexture(0, modIcons);
+        ResourceLocation icons = modIcons;
+        if (ModList.get().isLoaded("supernatural")) {
+            icons = SupernaturalHelper.getVampireAppleskinIcons(modIcons, Minecraft.getInstance().player);
+        }
+        RenderSystem.setShaderTexture(0, icons);
 
         float maxExhaustion = 4.0f;
         // clamp between 0 and 1
@@ -236,7 +247,7 @@ public class HUDOverlayHandler {
         int height = 9;
 
         enableAlpha(.75f);
-        guiGraphics.blit(modIcons, right - width, top, 81 - width, 18, width, height);
+        guiGraphics.blit(icons, right - width, top, 81 - width, 18, width, height);
         disableAlpha();
     }
 
