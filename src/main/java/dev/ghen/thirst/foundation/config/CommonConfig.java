@@ -55,6 +55,8 @@ public class CommonConfig
     public static final ModConfigSpec.ConfigValue<Number> SAND_FILTER_FILTRATION_AMOUNT;
     public static final ModConfigSpec.ConfigValue<Number> SAND_FILTER_MB_PER_TICK;
 
+    public static final ModConfigSpec.ConfigValue<Boolean> ENABLE_LOOT;
+
     static
     {
         BUILDER.push("General");
@@ -65,6 +67,7 @@ public class CommonConfig
         DEPLETES_WHEN_NAUSED = BUILDER.comment("Thirst depletes when player is nausea").define("depletesWhenNausea",true);
         MOVE_SLOW_WHEN_THIRSTY=BUILDER.comment("Whether players won't be able to sprint if their thirst bar is 3 droplets or less").define("moveSlowWhenThirsty",true);
         CAN_DRINK_RAIN_WATETR = BUILDER.comment("Whether players can drink rain water").define("DrinkRainWater",true);
+        ENABLE_LOOT = BUILDER.comment("Whether or not drink loot will be added to vanilla loot tables").define("EnableLoot",true);
         BUILDER.pop();
 
         BUILDER.push("Drinking Mechanics");
