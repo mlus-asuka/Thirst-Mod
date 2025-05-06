@@ -85,7 +85,13 @@ public class HUDOverlayHandler {
 
     public static void renderExhaustion(Gui gui, GuiGraphics mStack)
     {
-        foodIconsOffset = gui.rightHeight +10;
+        int offset = 10;
+        if (ModList.get().isLoaded("supernatural")) {
+            if (SupernaturalHelper.hasVampirismCheck(Minecraft.getInstance().player)) {
+                offset = 0;
+            }
+        }
+        foodIconsOffset = gui.rightHeight + offset;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
