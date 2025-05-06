@@ -41,7 +41,7 @@ public class SupernaturalHelper {
         return SupernaturalItems.BLOOD.get();
     }
 
-    //Grabs new Vampire Thirst Icons.
+    //Grabs new Vampire Thirst Icons for Player.
     public static ResourceLocation getVampireIcons(ResourceLocation original, Player player) {
         if (hasVampirismCheck(player)) {
             return VAMPIRE_THIRST_ICONS;
@@ -49,9 +49,25 @@ public class SupernaturalHelper {
         return original;
     }
 
-    //Grabs new Vampire Thirst Appleskin Icons.
+    //Grabs new Vampire Thirst Icons for ItemStack.
+    public static ResourceLocation getVampireIcons(ResourceLocation original, ItemStack stack) {
+        if (isBloodCheck(stack)) {
+            return VAMPIRE_THIRST_ICONS;
+        }
+        return original;
+    }
+
+    //Grabs new Vampire Thirst Appleskin Icons for Player.
     public static ResourceLocation getVampireAppleskinIcons(ResourceLocation original, Player player) {
         if (hasVampirismCheck(player)) {
+            return appleskinIcons;
+        }
+        return original;
+    }
+
+    //Grabs new Vampire Thirst Appleskin Icons for ItemStack.
+    public static ResourceLocation getVampireAppleskinIcons(ResourceLocation original, ItemStack stack) {
+        if (isBloodCheck(stack)) {
             return appleskinIcons;
         }
         return original;
