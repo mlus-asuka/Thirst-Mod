@@ -1,13 +1,18 @@
 package dev.ghen.thirst.compat.supernatural;
 
+import net.salju.supernatural.Supernatural;
 import net.salju.supernatural.init.SupernaturalItems;
 import net.salju.supernatural.init.SupernaturalTags;
 import net.salju.supernatural.events.SupernaturalManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 
 public class SupernaturalHelper {
+    public static ResourceLocation VAMPIRE_THIRST_ICONS = ResourceLocation.fromNamespaceAndPath(Supernatural.MODID, "textures/gui/thirst_icons.png");
+    private static final ResourceLocation appleskinIcons = ResourceLocation.fromNamespaceAndPath(Supernatural.MODID, "textures/gui/appleskin_icons.png");
+
     public static boolean canDrinkItem(ItemStack stack, Player player) {
         if (isVampireCheck(player)) {
             return isBloodCheck(stack);
@@ -17,7 +22,7 @@ public class SupernaturalHelper {
     }
 
     //Checks for Persistent NBT Player Data for Vampirism. Serverside only.
-	public static boolean isVampireCheck(Player player) {
+    public static boolean isVampireCheck(Player player) {
         return SupernaturalManager.isVampire(player);
     }
 
@@ -34,5 +39,37 @@ public class SupernaturalHelper {
     //Grabs the Bottle o' Blood item.
     public static Item getBloodBottle() {
         return SupernaturalItems.BLOOD.get();
+    }
+
+    //Grabs new Vampire Thirst Icons for Player.
+    public static ResourceLocation getVampireIcons(ResourceLocation original, Player player) {
+        if (hasVampirismCheck(player)) {
+            return VAMPIRE_THIRST_ICONS;
+        }
+        return original;
+    }
+
+    //Grabs new Vampire Thirst Icons for ItemStack.
+    public static ResourceLocation getVampireIcons(ResourceLocation original, ItemStack stack) {
+        if (isBloodCheck(stack)) {
+            return VAMPIRE_THIRST_ICONS;
+        }
+        return original;
+    }
+
+    //Grabs new Vampire Thirst Appleskin Icons for Player.
+    public static ResourceLocation getVampireAppleskinIcons(ResourceLocation original, Player player) {
+        if (hasVampirismCheck(player)) {
+            return appleskinIcons;
+        }
+        return original;
+    }
+
+    //Grabs new Vampire Thirst Appleskin Icons for ItemStack.
+    public static ResourceLocation getVampireAppleskinIcons(ResourceLocation original, ItemStack stack) {
+        if (isBloodCheck(stack)) {
+            return appleskinIcons;
+        }
+        return original;
     }
 }
