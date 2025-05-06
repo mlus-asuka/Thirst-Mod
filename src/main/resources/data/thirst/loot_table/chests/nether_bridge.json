@@ -1,4 +1,9 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thirst:loot_config"
+    }
+  ],
   "type": "minecraft:chest",
   "pools": [
     {
@@ -8,8 +13,8 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "set_nbt",
-              "tag": "{Purity: 2}"
+              "function": "minecraft:set_components",
+              "components": {"thirst:purity":2}
             },
             {
               "count": {
@@ -31,8 +36,8 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "set_nbt",
-              "tag": "{Purity: 3}"
+              "function": "minecraft:set_components",
+              "components": {"thirst:purity":3}
             },
             {
               "count": {

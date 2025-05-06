@@ -1,4 +1,13 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thirst:loot_config"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersrespite"
+    }
+  ],
   "type": "minecraft:chest",
   "pools": [
     {
@@ -8,8 +17,8 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "set_nbt",
-              "tag": "{Purity: 3}"
+              "function": "minecraft:set_components",
+              "components": {"thirst:purity":3}
             }
           ],
           "name": "farmersrespite:rose_hip_tea",

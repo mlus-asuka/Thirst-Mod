@@ -1,4 +1,13 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "thirst:loot_config"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "farmersrespite"
+    }
+  ],
   "type": "minecraft:chest",
   "pools": [
     {
@@ -8,19 +17,19 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "set_nbt",
-              "tag": "{Purity: 3}"
+              "function": "minecraft:set_components",
+              "components": {"thirst:purity":3}
             }
           ],
-          "name": "farmersdelight:apple_cider",
+          "name": "farmersrespite:dandelion_tea",
           "weight": 10
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "set_nbt",
-              "tag": "{Purity: 3}"
+              "function": "minecraft:set_components",
+              "components": {"thirst:purity":3}
             }
           ],
           "name": "farmersrespite:yellow_tea",

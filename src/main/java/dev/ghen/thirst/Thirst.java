@@ -4,11 +4,11 @@ import dev.ghen.thirst.api.ThirstHelper;
 import dev.ghen.thirst.compat.create.CreateRegistry;
 import dev.ghen.thirst.compat.create.ponder.ThirstPonderPlugin;
 import dev.ghen.thirst.content.purity.WaterPurity;
+import dev.ghen.thirst.content.registry.ConditionInit;
 import dev.ghen.thirst.content.registry.ItemInit;
 import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.content.thirst.PlayerThirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
-import dev.ghen.thirst.foundation.common.loot.ModLootModifiers;
 import dev.ghen.thirst.foundation.config.*;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import dev.ghen.thirst.foundation.gui.appleskin.HUDOverlayHandler;
@@ -39,7 +39,6 @@ public class Thirst
         modBus.addListener(this::clientSetup);
         ModAttachment.ATTACHMENT_TYPES.register(modBus);
         ThirstComponent.DR.register(modBus);
-        ModLootModifiers.LOOT_MODIFIERS.register(modBus);
 
         if(FMLEnvironment.dist.isClient()){
             if(ModList.get().isLoaded("appleskin"))
@@ -51,8 +50,8 @@ public class Thirst
             }
         }
 
-
         ItemInit.ITEMS.register(modBus);
+        ConditionInit.CONDITION_CODECS.register(modBus);
 
         if(ModList.get().isLoaded("create"))
         {
