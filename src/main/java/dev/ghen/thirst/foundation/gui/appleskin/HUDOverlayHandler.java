@@ -232,7 +232,11 @@ public class HUDOverlayHandler {
 
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
 
-            guiGraphics.blit(ThirstBarRenderer.THIRST_ICONS, x, y, u, v, iconSize, iconSize, 25, 9);
+            ResourceLocation icons = ThirstBarRenderer.THIRST_ICONS;
+            if (ModList.get().isLoaded("supernatural")) {
+                icons = SupernaturalHelper.getVampireIcons(icons, Minecraft.getInstance().player);
+            }
+            guiGraphics.blit(icons, x, y, u, v, iconSize, iconSize, 25, 9);
         }
 
         disableAlpha();
