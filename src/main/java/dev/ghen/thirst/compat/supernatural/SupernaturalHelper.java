@@ -1,5 +1,6 @@
 package dev.ghen.thirst.compat.supernatural;
 
+import net.salju.supernatural.Supernatural;
 import net.salju.supernatural.init.SupernaturalItems;
 import net.salju.supernatural.init.SupernaturalTags;
 import net.salju.supernatural.events.SupernaturalManager;
@@ -9,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
 
 public class SupernaturalHelper {
-    public static ResourceLocation VAMPIRE_THIRST_ICONS = ResourceLocation.fromNamespaceAndPath("supernatural", "textures/gui/thirst_icons.png");
-    private static final ResourceLocation appleskinIcons = ResourceLocation.fromNamespaceAndPath("supernatural", "textures/gui/appleskin_icons.png");
+    public static ResourceLocation VAMPIRE_THIRST_ICONS = ResourceLocation.fromNamespaceAndPath(Supernatural.MODID, "textures/gui/thirst_icons.png");
+    private static final ResourceLocation appleskinIcons = ResourceLocation.fromNamespaceAndPath(Supernatural.MODID, "textures/gui/appleskin_icons.png");
 
     public static boolean canDrinkItem(ItemStack stack, Player player) {
         if (isVampireCheck(player)) {
