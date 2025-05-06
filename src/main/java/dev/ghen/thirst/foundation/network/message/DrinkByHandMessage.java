@@ -3,8 +3,10 @@ package dev.ghen.thirst.foundation.network.message;
 import dev.ghen.thirst.Thirst;
 import dev.ghen.thirst.foundation.common.capability.ModAttachment;
 import dev.ghen.thirst.foundation.config.CommonConfig;
+import dev.ghen.thirst.compat.supernatural.SupernaturalHelper;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import io.netty.buffer.ByteBuf;
+import net.neoforged.fml.ModList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -40,6 +42,12 @@ public record DrinkByHandMessage(Vector3f pos) implements CustomPacketPayload
                 Level level = player.level();
                 if(player.getData(ModAttachment.PLAYER_THIRST).getThirst()==20)
                     return;
+
+                if (ModList.get().isLoaded("supernatural")) {
+                    if (SupernaturalHelper.isVampireCheck(player)) {
+                        return;
+                    }
+                }
 
                 int purity = WaterPurity.getBlockPurity(level, new BlockPos((int) data.pos.x, (int) data.pos.y, (int) data.pos.z));
                 level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_DRINK, SoundSource.NEUTRAL, 1.0F, 1.0F);

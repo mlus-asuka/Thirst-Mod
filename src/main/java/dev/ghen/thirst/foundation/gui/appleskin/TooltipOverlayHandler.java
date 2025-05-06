@@ -4,11 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import dev.ghen.thirst.Thirst;
+import dev.ghen.thirst.compat.supernatural.SupernaturalHelper;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -188,13 +190,17 @@ public class TooltipOverlayHandler {
             // Render from right to left so that the icons 'face' the right way
             offsetX += (foodTooltip.hungerBars - 1) * 9;
 
-            RenderSystem.setShaderTexture(0, ThirstBarRenderer.THIRST_ICONS);
+            ResourceLocation icons = ThirstBarRenderer.THIRST_ICONS;
+            if (ModList.get().isLoaded("supernatural")) {
+                icons = SupernaturalHelper.getVampireIcons(icons, itemStack);
+            }
+            RenderSystem.setShaderTexture(0, icons);
             for (int i = 0; i < foodTooltip.hungerBars * 2; i += 2)
             {
                 if (thirst == i + 1)
-                    guiGraphics.blit(ThirstBarRenderer.THIRST_ICONS, offsetX, offsetY,0, 8, 0, 9, 9, 25, 9);
+                    guiGraphics.blit(icons, offsetX, offsetY,0, 8, 0, 9, 9, 25, 9);
                 else
-                    guiGraphics.blit(ThirstBarRenderer.THIRST_ICONS, offsetX, offsetY,0, 16, 0, 9, 9, 25, 9);
+                    guiGraphics.blit(icons, offsetX, offsetY,0, 16, 0, 9, 9, 25, 9);
 
                 offsetX -= 9;
             }
@@ -218,8 +224,12 @@ public class TooltipOverlayHandler {
             // Render from right to left so that the icons 'face' the right way
             offsetX += (foodTooltip.saturationBars - 1) * 7;
 
+            ResourceLocation appleskinIcons = modIcons;
+            if (ModList.get().isLoaded("supernatural")) {
+                appleskinIcons = SupernaturalHelper.getVampireAppleskinIcons(appleskinIcons, itemStack);
+            }
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0, modIcons);
+            RenderSystem.setShaderTexture(0, appleskinIcons);
             for (int i = 0; i < foodTooltip.saturationBars * 2; i += 2)
             {
                 float effectiveSaturationOfBar = (absModifiedSaturationIncrement - i) / 2f;
@@ -228,7 +238,7 @@ public class TooltipOverlayHandler {
                 if (shouldBeFaded)
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, .5F);
 
-                guiGraphics.blit(modIcons, offsetX, offsetY, 0, effectiveSaturationOfBar >= 1 ? 21 : effectiveSaturationOfBar > 0.5 ? 14 : effectiveSaturationOfBar > 0.25 ? 7 : effectiveSaturationOfBar > 0 ? 0 : 28, modifiedSaturationIncrement >= 0 ? 27 : 34, 7, 7, 256, 256);
+                guiGraphics.blit(appleskinIcons, offsetX, offsetY, 0, effectiveSaturationOfBar >= 1 ? 21 : effectiveSaturationOfBar > 0.5 ? 14 : effectiveSaturationOfBar > 0.25 ? 7 : effectiveSaturationOfBar > 0 ? 0 : 28, modifiedSaturationIncrement >= 0 ? 27 : 34, 7, 7, 256, 256);
 
                 if (shouldBeFaded)
                     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -248,7 +258,7 @@ public class TooltipOverlayHandler {
 
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0,modIcons);
+            RenderSystem.setShaderTexture(0, appleskinIcons);
 
             // reset to drawHoveringText state
             RenderSystem.disableDepthTest();
