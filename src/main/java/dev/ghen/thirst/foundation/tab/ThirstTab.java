@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class ThirstTab
@@ -54,9 +55,12 @@ public class ThirstTab
         list.add(WaterPurity.addPurity(new ItemStack(ItemInit.TERRACOTTA_WATER_BOWL.get()), 2));
         list.add(ItemInit.TERRACOTTA_WATER_BOWL.get().getDefaultInstance());
 
-        if(ModList.get().isLoaded("create")){
-            list.add(CreateRegistry.SAND_FILTER_BLOCK.asItem().getDefaultInstance());
-        }
+//        if(ModList.get().isLoaded("create")){
+//            list.remove(CreateRegistry.SAND_FILTER_BLOCK.asItem().getDefaultInstance());
+//            list.add(CreateRegistry.SAND_FILTER_BLOCK.asItem().getDefaultInstance());
+//        }
+
+        System.out.println(Arrays.toString(list.toArray()));
 
         return list;
     }
