@@ -55,6 +55,8 @@ public class Thirst
 
         if(ModList.get().isLoaded("create"))
         {
+            CreateRegistry.BLOCKS.register(modBus);
+            CreateRegistry.BLOCK_ENTITY_TYPES.register(modBus);
             CreateRegistry.register();
         }
 
