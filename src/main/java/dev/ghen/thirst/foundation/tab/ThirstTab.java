@@ -59,8 +59,6 @@ public class ThirstTab
             list.add(CreateRegistry.SAND_FILTER_ITEM.get().getDefaultInstance());
         }
 
-        System.out.println(Arrays.toString(list.toArray()));
-
         return list;
     }
 }
