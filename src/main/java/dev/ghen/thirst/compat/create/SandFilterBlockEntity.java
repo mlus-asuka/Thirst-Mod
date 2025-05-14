@@ -50,7 +50,7 @@ public class SandFilterBlockEntity extends SmartBlockEntity implements IHaveGogg
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
-                CreateRegistry.SAND_FILTER_TE.get(),
+                CreateRegistry.SAND_FILTER_BE.get(),
                 (be, side) -> {
                     if (side != null && side.getAxis() == Direction.Axis.Y)
                     {

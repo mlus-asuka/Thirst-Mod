@@ -16,7 +16,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("deprecation")
 public class SandFilterBlock extends Block implements IWrenchable, IBE<SandFilterBlockEntity> {
 
     public SandFilterBlock(Properties p_i48440_1_) {
@@ -46,7 +45,7 @@ public class SandFilterBlock extends Block implements IWrenchable, IBE<SandFilte
     @Override
     public BlockEntityType<? extends SandFilterBlockEntity> getBlockEntityType()
     {
-        return CreateRegistry.SAND_FILTER_TE.get();
+        return CreateRegistry.SAND_FILTER_BE.get();
     }
 
 }

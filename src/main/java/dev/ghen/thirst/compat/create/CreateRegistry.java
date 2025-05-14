@@ -8,15 +8,15 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.ghen.thirst.Thirst;
+import dev.ghen.thirst.foundation.tab.ThirstTab;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 public class CreateRegistry
 {
-    public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.lazy(() ->Registrate.create(Thirst.ID));
+    public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.lazy(() ->Registrate.create(Thirst.ID).defaultCreativeTab(ThirstTab.THIRST_TAB.getKey()));
 
     public static void register(){}
-
 
     public static final BlockEntry<SandFilterBlock> SAND_FILTER_BLOCK = REGISTRATE.get()
             .block("sand_filter", SandFilterBlock::new)
@@ -25,7 +25,7 @@ public class CreateRegistry
             .item(AssemblyOperatorBlockItem::new)
             .transform(customItemModel())
             .register();
-    public static final BlockEntityEntry<SandFilterBlockEntity> SAND_FILTER_TE = REGISTRATE.get()
+    public static final BlockEntityEntry<SandFilterBlockEntity> SAND_FILTER_BE = REGISTRATE.get()
             .blockEntity("sand_filter", SandFilterBlockEntity::new)
             .validBlocks(SAND_FILTER_BLOCK)
             .register();

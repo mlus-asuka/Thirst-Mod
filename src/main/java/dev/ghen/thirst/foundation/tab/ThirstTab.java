@@ -52,10 +52,6 @@ public class ThirstTab
         list.add(WaterPurity.addPurity(new ItemStack(ItemInit.TERRACOTTA_WATER_BOWL.get()), 2));
         list.add(ItemInit.TERRACOTTA_WATER_BOWL.get().getDefaultInstance());
 
-//        if(ModList.get().isLoaded("create")){
-//            list.add(CreateRegistry.SAND_FILTER_BLOCK.asItem().getDefaultInstance());
-//        }
-
         return list;
     }
 }
