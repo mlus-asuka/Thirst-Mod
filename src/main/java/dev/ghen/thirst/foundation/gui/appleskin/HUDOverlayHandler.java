@@ -76,9 +76,7 @@ public class HUDOverlayHandler {
             boolean isAlive = mc.player.isAlive();
 
             if (isAlive && !isMounted && !mc.options.hideGui && shouldDrawSurvivalElements(mc) && !ThirstBarRenderer.cancelRender) {
-                if(ModConfig.SHOW_SATURATION_OVERLAY.get()){
-                    renderThirstOverlay(guiGraphics);
-                }
+                renderThirstOverlay(guiGraphics);
             }
         }
     }
@@ -119,7 +117,9 @@ public class HUDOverlayHandler {
 
         generateHungerBarOffsets(top, right, mc.gui.getGuiTicks(), player);
 
-        drawSaturationOverlay(0, thirstData.getQuenched(), guiGraphics , right, top, 1f);
+        if(ModConfig.SHOW_SATURATION_OVERLAY.get()){
+            drawSaturationOverlay(0, thirstData.getQuenched(), guiGraphics , right, top, 1f);
+        }
 
         // try to get the item stack in the player hand
         ItemStack heldItem = player.getMainHandItem();

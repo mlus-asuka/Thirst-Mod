@@ -13,7 +13,6 @@ import dev.ghen.thirst.foundation.config.ItemSettingsConfig;
 import dev.ghen.thirst.foundation.config.KeyWordConfig;
 import dev.ghen.thirst.foundation.util.ConfigHelper;
 import dev.ghen.thirst.foundation.util.LoadedValue;
-import net.neoforged.fml.ModList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffects;
@@ -24,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.neoforged.fml.ModList;
 
 import java.util.List;
 import java.util.Map;
@@ -141,7 +141,8 @@ public class ThirstHelper
     {
         final float perLevelMultiplier = 0.0625f;
         float totalLevels = EnchantmentHelper.getDamageProtection((ServerLevel) player.level(),player, player.damageSources().onFire()) / 2;
-
+        //In some situations, the player can have more than 12 levels of fire protection due to some bugs
+        if(totalLevels>12) totalLevels=12;
         return 1.0f - ((totalLevels * perLevelMultiplier) * 0.75f);
     }
 
