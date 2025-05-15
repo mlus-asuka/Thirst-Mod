@@ -15,7 +15,9 @@
     {
       "amount": 250,
       "fluid": "minecraft:water",
-      "nbt": "{Purity:3}"
+      "components": {
+        "thirst:purity": 3
+      }
     },
     {
         "id": "minecraft:green_dye"

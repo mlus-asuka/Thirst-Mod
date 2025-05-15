@@ -1,6 +1,5 @@
 package dev.ghen.thirst.foundation.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import dev.ghen.thirst.content.thirst.PlayerThirst;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,8 +25,9 @@ public class MixinPotionItem {
     }
 
     @Inject(method = "finishUsingItem", at = @At("RETURN"))
-    public void onFinishUsingItem(ItemStack item, Level level, LivingEntity livingEntity, CallbackInfoReturnable<ItemStack> cir, @Local Player player)
+    public void onFinishUsingItem(ItemStack item, Level level, LivingEntity livingEntity, CallbackInfoReturnable<ItemStack> cir)
     {
+        Player player = livingEntity instanceof Player ? (Player)livingEntity: null;
         if(player != null)
         {
             PlayerThirst.drink(item, player);

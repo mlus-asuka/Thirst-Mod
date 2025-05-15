@@ -13,9 +13,11 @@
   "result": {
     "Count": 1,
     "id": "minecraft:potion",
-    "tag": {
-      "Potion": "minecraft:water",
-      "Purity": 1
+    "components": {
+      "potion_contents": {
+        "potion": "minecraft:water"
+      },
+      "thirst:purity": 1
     }
   },
   "purifytime": 200
