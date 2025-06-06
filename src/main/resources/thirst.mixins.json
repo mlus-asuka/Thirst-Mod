@@ -25,13 +25,13 @@
     "toughasnails.MixinEmptyCanteenItem",
     "toughasnails.MixinServerConfig",
     "toughasnails.MixinThirstHandler",
-    "toughasnails.MixinThirstHelperImpl",
-    "toughasnails.MixinTooltipHandler"
+    "toughasnails.MixinThirstHelperImpl"
   ],
   "client": [
     "MixinGui",
     "MixinGuiGraphics",
-    "MixinLocalPlayer"
+    "MixinLocalPlayer",
+    "toughasnails.MixinTooltipHandler"
   ],
   "injectors": {
     "defaultRequire": 1
