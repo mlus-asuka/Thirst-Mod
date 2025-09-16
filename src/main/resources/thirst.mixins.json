@@ -16,7 +16,6 @@
     "MixinPlayer",
     "MixinPotionItem",
     "accessors.farmersdelight.SyncedBlockEntityAccessor",
-    "coldsweat.MixinFilledWaterSkin",
     "create.MixinBasinRecipe",
     "create.MixinFluidDrainingBehaviour",
     "create.MixinGenericItemEmptying",
