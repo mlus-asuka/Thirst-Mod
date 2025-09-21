@@ -137,11 +137,6 @@ dependencies {
      localRuntime "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
 }
 
-//mixin {
-//    add sourceSets.main, "thirst.refmap.json"
-//    config 'thirst.mixin.json'
-//}
-
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
 // When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.

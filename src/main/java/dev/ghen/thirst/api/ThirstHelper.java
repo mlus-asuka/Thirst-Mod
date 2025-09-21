@@ -106,7 +106,6 @@ public class ThirstHelper
     public static int getThirst(ItemStack itemStack)
     {
         Item item = itemStack.getItem();
-
         if(VALID_DRINKS.containsKey(item)) {
             return VALID_DRINKS.get(item)[0].intValue();
         }

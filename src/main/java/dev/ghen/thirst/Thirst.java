@@ -5,6 +5,7 @@ import dev.ghen.thirst.compat.create.CreateRegistry;
 import dev.ghen.thirst.compat.create.ponder.ThirstPonderPlugin;
 import dev.ghen.thirst.content.purity.WaterPurity;
 import dev.ghen.thirst.content.registry.ConditionInit;
+import dev.ghen.thirst.content.registry.EffectInit;
 import dev.ghen.thirst.content.registry.ItemInit;
 import dev.ghen.thirst.content.registry.ThirstComponent;
 import dev.ghen.thirst.content.thirst.PlayerThirst;
@@ -50,7 +51,8 @@ public class Thirst
             }
         }
 
-        ItemInit.ITEMS.register(modBus);
+        ItemInit.register(modBus);
+        EffectInit.register(modBus);
         ConditionInit.CONDITION_CODECS.register(modBus);
 
         if(ModList.get().isLoaded("create"))
@@ -59,7 +61,6 @@ public class Thirst
         }
 
         ThirstTab.register(modBus);
-
         //configs
         ItemSettingsConfig.setup(modContainer);
         CommonConfig.setup(modContainer);

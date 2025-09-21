@@ -2,6 +2,7 @@ package dev.ghen.thirst.content.registry;
 
 import dev.ghen.thirst.foundation.common.item.DrinkableItem;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -12,7 +13,8 @@ public class ItemInit {
     public static final DeferredItem<Item>  TERRACOTTA_BOWL;
     public static final DeferredItem<Item>  TERRACOTTA_WATER_BOWL;
 
-    public ItemInit() {
+    public static void register(IEventBus modBus) {
+        ITEMS.register(modBus);
     }
 
     static {
