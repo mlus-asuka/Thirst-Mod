@@ -1,0 +1,10 @@
+{
+  "itemGroup.thirstcanteen": "口渴-水壶",
+  "item.thirstcanteen.dragon_bottle": "龙水壶",
+  "item.thirstcanteen.dragon_bottle_full": "装水的龙水壶",
+  "item.thirstcanteen.military_bottle": "军用水壶",
+  "item.thirstcanteen.military_bottle_full": "装水的军用水壶",
+  "item.thirstcanteen.leather_canteen": "皮革水壶",
+  "item.thirstcanteen.leather_canteen_full": "装水的皮革水壶",
+  "tooltips.drinkable": "水量: %1$s/%2$s"
+}

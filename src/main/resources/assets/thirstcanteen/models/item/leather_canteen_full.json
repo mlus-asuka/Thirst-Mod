@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "thirstcanteen:item/leather_canteen_full"
+  }
+}
