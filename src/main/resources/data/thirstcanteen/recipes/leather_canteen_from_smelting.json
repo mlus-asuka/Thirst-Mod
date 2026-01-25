@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient":[
+    {
+      "item": "thirstcanteen:leather_canteen_full"
+    }
+  ],
+  "result": {
+    "item": "thirstcanteen:leather_canteen_full"
+  },
+  "experience": 0.35,
+  "cookingtime":300
+}

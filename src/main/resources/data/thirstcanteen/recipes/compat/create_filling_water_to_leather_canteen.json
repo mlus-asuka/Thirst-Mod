@@ -1,0 +1,20 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "thirstcanteen:leather_canteen"
+    },
+    {
+      "amount": 500,
+      "fluidTag": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "item": "thirstcanteen:leather_canteen_full",
+      "nbt": {
+        "Contain": 8
+      }
+    }
+  ]
+}

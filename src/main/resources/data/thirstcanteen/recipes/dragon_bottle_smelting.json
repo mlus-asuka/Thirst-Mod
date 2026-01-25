@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient":[
+    {
+      "item": "thirstcanteen:dragon_bottle_full"
+    }
+  ],
+  "result": {
+    "item": "thirstcanteen:dragon_bottle_full"
+  },
+  "experience": 0.35,
+  "cookingtime":400
+}

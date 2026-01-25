@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " A ",
+    "BCB",
+    "DED"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:dragon_head"
+    },
+    "B":{
+      "item": "minecraft:string"
+    },
+    "C": {
+      "item": "minecraft:conduit"
+    },
+    "D": {
+      "item": "minecraft:shulker_shell"
+    },
+    "E": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "thirstcanteen:dragon_bottle",
+    "count": 1
+  }
+}

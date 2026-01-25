@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " AB",
+    "ACA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B":{
+      "item": "minecraft:string"
+    },
+    "C": {
+      "item": "minecraft:green_dye"
+    }
+  },
+  "result": {
+    "item": "thirstcanteen:military_bottle",
+    "count": 1
+  }
+}

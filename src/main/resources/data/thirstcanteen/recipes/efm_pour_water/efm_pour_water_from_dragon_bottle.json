@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "thirstcanteen:dragon_bottle_full"
+    }
+  ],
+  "result": {
+    "item": "thirstcanteen:dragon_bottle"
+  }
+}

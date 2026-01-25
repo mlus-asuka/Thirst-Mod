@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "toughasnails"
+    }
+  ],
+  "type": "toughasnails:water_purifying",
+  "input": {
+    "Count": 1,
+    "id": "minecraft:potion",
+    "tag": {
+      "Potion": "minecraft:water",
+      "Purity": 2
+    }
+  },
+  "purifytime": 200,
+  "result": {
+    "Count": 1,
+    "id": "toughasnails:purified_water_bottle"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "BAB",
+    "BBB"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:glass"
+    },
+    "B": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "thirstcanteen:leather_canteen",
+    "count": 1
+  }
+}
